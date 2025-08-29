@@ -4,136 +4,167 @@
 [![Version](https://img.shields.io/badge/Version-1.0-blue.svg)]()
 [![Status](https://img.shields.io/badge/Status-Planning-orange.svg)]()
 
-## Project Overview
+## Visão Geral do Projeto
 
-**Frete Inteligente** is a comprehensive intelligent freight and logistics management system designed to revolutionize the transportation industry through advanced technology, machine learning, and real-time optimization.
+**Frete Inteligente** é um sistema abrangente de gestão inteligente de frete e logística, desenvolvido para revolucionar a indústria de transporte através de tecnologia avançada, aprendizado de máquina e otimização em tempo real.
 
-### Key Features
+### Características Principais
 
-🚚 **Intelligent Route Optimization** - ML-powered algorithms for optimal route planning  
-📍 **Real-time Fleet Tracking** - GPS and IoT integration for live vehicle monitoring  
-📊 **Predictive Analytics** - Forecasting for maintenance, demand, and delivery times  
-📦 **Automated Load Planning** - 3D cargo optimization for maximum efficiency  
-📱 **Multi-platform Access** - Web dashboard and mobile applications  
-🔗 **Third-party Integration** - Seamless connection with ERP and logistics providers  
+🚚 **Otimização Inteligente de Rotas** - Algoritmos baseados em ML para planejamento ótimo de rotas  
+📍 **Rastreamento de Frota em Tempo Real** - Integração GPS e IoT para monitoramento ao vivo de veículos  
+📊 **Análise Preditiva** - Previsões para manutenção, demanda e tempos de entrega  
+📦 **Planejamento Automatizado de Cargas** - Otimização 3D de cargas para máxima eficiência  
+📱 **Acesso Multi-plataforma** - Dashboard web e aplicações móveis  
+🔗 **Integração com Terceiros** - Conexão perfeita com ERP e provedores de logística  
 
-## Documentation Structure
+## Stack Tecnológica Principal
 
-This repository contains comprehensive project documentation following ISO/IEC/IEEE 29148:2018 standards:
+### Backend
+- **Linguagem**: Java 17+ com Spring Boot 3.x
+- **APIs**: Spring Web (RESTful APIs)
+- **Segurança**: Spring Security + JWT
+- **Banco de Dados**: PostgreSQL + Spring Data JPA
+- **Cache**: Redis
 
-### 📋 Requirements Documentation
-- **[briefing_iso_srs.md](./briefing_iso_srs.md)** - Complete Software Requirements Specification following ISO standards
-- **[srs.md](./srs.md)** - Executive summary and quick reference guide
+### Frontend Web
+- **Framework**: React.js com TypeScript
+- **UI**: Material-UI
+- **Estado**: Redux Toolkit
 
-### 🏗️ Architecture Documentation  
-- **[architecture.md](./architecture.md)** - Detailed system architecture and technical design
+### Mobile
+- **Framework**: React Native 0.72+
+- **Plataformas**: iOS 14+ e Android 10+
+- **Navegação**: React Navigation v6
 
-## Project Scope
+## Estrutura da Documentação
 
-The Frete Inteligente system addresses critical challenges in the freight and logistics industry:
+Esta documentação está organizada em duas partes principais:
 
-- **Cost Optimization**: Reduce transportation costs by 15-20%
-- **Delivery Accuracy**: Improve on-time delivery to 95%+
-- **Operational Efficiency**: Automate manual planning processes
-- **Real-time Visibility**: Provide complete shipment transparency
-- **Predictive Maintenance**: Reduce vehicle downtime
-- **Regulatory Compliance**: Ensure adherence to transportation regulations
+### 📱 MVP (Minimum Viable Product)
+**[docs/mvp/](./docs/mvp/)**
+- **[README.md](./docs/mvp/README.md)** - Visão geral do MVP e funcionalidades essenciais
+- **[architecture-mvp.md](./docs/mvp/architecture-mvp.md)** - Arquitetura simplificada focada em Java/Spring + React Native
+- **[technical-specs-mvp.md](./docs/mvp/technical-specs-mvp.md)** - Especificações técnicas detalhadas para desenvolvimento
 
-## Target Users
+### 🎯 Projeto Completo
+**[docs/projeto-completo/](./docs/projeto-completo/)**
+- **[README.md](./docs/projeto-completo/README.md)** - Sistema completo com todas as funcionalidades avançadas
+- **[architecture-complete.md](./docs/projeto-completo/architecture-complete.md)** - Arquitetura de microservices completa
+- **[requirements-complete.md](./docs/projeto-completo/requirements-complete.md)** - Especificações completas seguindo ISO/IEC/IEEE 29148:2018
 
-- **Logistics Managers** - Strategic planning and oversight
-- **Dispatchers** - Daily operations and route management  
-- **Drivers** - Mobile access and status updates
-- **Customers** - Shipment tracking and notifications
-- **System Administrators** - Platform configuration and maintenance
+### 📋 Documentação Legacy
+- **[srs.md](./srs.md)** - Resumo executivo dos requisitos
+- **[briefing_iso_srs.md](./briefing_iso_srs.md)** - Especificação completa original
+- **[architecture.md](./architecture.md)** - Documentação de arquitetura original
 
-## Technology Highlights
+## Escopo do Projeto
 
-- **Cloud-Native Architecture** - Scalable microservices on Kubernetes
-- **Machine Learning** - TensorFlow-powered optimization algorithms
-- **Real-time Processing** - Event-driven architecture with Kafka
-- **Modern Frontend** - React.js web app and React Native mobile apps
-- **Enterprise Integration** - RESTful APIs and webhook support
-- **Multi-language Support** - Portuguese, English, and Spanish
+O sistema Frete Inteligente aborda desafios críticos na indústria de frete e logística:
 
-## Compliance & Standards
+- **Otimização de Custos**: Reduzir custos de transporte em 15-20%
+- **Precisão de Entrega**: Melhorar pontualidade de entregas para 95%+
+- **Eficiência Operacional**: Automatizar processos manuais de planejamento
+- **Visibilidade em Tempo Real**: Fornecer transparência completa de embarques
+- **Manutenção Preditiva**: Reduzir tempo de inatividade de veículos
+- **Conformidade Regulatória**: Garantir aderência às regulamentações de transporte
 
-- ✅ **ISO/IEC/IEEE 29148:2018** - Requirements engineering standards
-- ✅ **GDPR & LGPD** - Data privacy and protection compliance
-- ✅ **ISO 9001:2015** - Quality management processes
-- ✅ **ISO/IEC 27001:2013** - Information security management
-- ✅ **Transportation Regulations** - Local DOT compliance
+## Usuários-Alvo
 
-## Getting Started
+- **Gestores de Logística** - Planejamento estratégico e supervisão
+- **Despachantes** - Operações diárias e gestão de rotas  
+- **Motoristas** - Acesso móvel e atualizações de status
+- **Clientes** - Rastreamento de embarques e notificações
+- **Administradores de Sistema** - Configuração e manutenção da plataforma
 
-### Prerequisites
-- Node.js 18+ and Python 3.9+
-- Docker and Kubernetes cluster
-- PostgreSQL 14+ and Redis 6+
-- Cloud provider account (AWS/Azure/GCP)
+## Destaques Tecnológicos
 
-### Quick Start
+- **Arquitetura Cloud-Native** - Microservices escaláveis em Java/Spring Boot
+- **Machine Learning** - Algoritmos de otimização baseados em IA
+- **Processamento em Tempo Real** - Arquitetura orientada a eventos
+- **Frontend Moderno** - Aplicação web React.js e apps móveis React Native
+- **Integração Enterprise** - APIs RESTful e suporte a webhooks
+- **Suporte Multi-idioma** - Português, Inglês e Espanhol
+
+## Conformidade e Padrões
+
+- ✅ **ISO/IEC/IEEE 29148:2018** - Padrões de engenharia de requisitos
+- ✅ **GDPR & LGPD** - Conformidade com privacidade e proteção de dados
+- ✅ **ISO 9001:2015** - Processos de gestão da qualidade
+- ✅ **ISO/IEC 27001:2013** - Gestão de segurança da informação
+- ✅ **Regulamentações de Transporte** - Conformidade local DOT
+
+## Começando
+
+### Pré-requisitos
+- Java 17+ (OpenJDK recomendado)
+- Node.js 18+ para frontend e mobile
+- PostgreSQL 14+ e Redis 6+
+- Docker para containerização
+
+### Início Rápido
+
 ```bash
-# Clone the repository
+# Clonar o repositório
 git clone https://github.com/slnntk/frete-inteligente.git
+cd frete-inteligente
 
-# Review the requirements specification
-cat briefing_iso_srs.md
+# Revisar documentação MVP
+cat docs/mvp/README.md
 
-# Review the system architecture  
-cat architecture.md
+# Revisar arquitetura MVP  
+cat docs/mvp/architecture-mvp.md
 
-# Set up development environment (coming soon)
-# npm install && docker-compose up
+# Configurar ambiente de desenvolvimento (em breve)
+# Consulte docs/mvp/technical-specs-mvp.md
 ```
 
-## Project Status
+## Status do Projeto
 
-🟡 **Current Phase**: Requirements Analysis & System Design  
-📅 **Started**: August 2025  
-👥 **Team**: Development team onboarding  
-📈 **Next Milestone**: Technical architecture validation  
+🟡 **Fase Atual**: Análise de Requisitos e Design do Sistema  
+📅 **Iniciado**: Agosto 2025  
+👥 **Equipe**: Onboarding da equipe de desenvolvimento  
+📈 **Próximo Marco**: Validação da arquitetura técnica  
 
 ### Roadmap
 
-- [x] Requirements specification (ISO standard compliance)
-- [x] System architecture design
-- [ ] Technical proof of concept
-- [ ] MVP development
-- [ ] Beta testing program
-- [ ] Production deployment
+- [x] Especificação de requisitos (conformidade com padrão ISO)
+- [x] Design da arquitetura do sistema
+- [x] Organização da documentação (MVP vs Projeto Completo)
+- [ ] Prova de conceito técnica (MVP)
+- [ ] Desenvolvimento do MVP
+- [ ] Programa de testes beta
+- [ ] Deploy de produção
 
-## Contributing
+## Contribuindo
 
-We welcome contributions to the Frete Inteligente project! Please read our contributing guidelines and code of conduct.
+Agradecemos contribuições para o projeto Frete Inteligente! Por favor, leia nossas diretrizes de contribuição e código de conduta.
 
-### Development Workflow
-1. Review the [SRS documentation](./briefing_iso_srs.md)
-2. Check the [architecture design](./architecture.md)  
-3. Follow the coding standards and practices
-4. Submit pull requests with comprehensive testing
+### Fluxo de Desenvolvimento
+1. Revise a documentação do [MVP](./docs/mvp/README.md) ou [Projeto Completo](./docs/projeto-completo/README.md)
+2. Consulte as [especificações técnicas](./docs/mvp/technical-specs-mvp.md)  
+3. Siga os padrões e práticas de codificação
+4. Envie pull requests com testes abrangentes
 
-## License
+## Licença
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Este projeto está licenciado sob a Licença MIT - consulte o arquivo [LICENSE](LICENSE) para detalhes.
 
-## Support
+## Suporte
 
-For questions, issues, or collaboration opportunities:
+Para dúvidas, problemas ou oportunidades de colaboração:
 
-- 📧 **Email**: [Project Contact]
 - 💬 **Issues**: [GitHub Issues](https://github.com/slnntk/frete-inteligente/issues)
-- 📖 **Documentation**: Review the SRS and architecture documents
-- 🤝 **Collaboration**: Open to partnerships and integrations
+- 📖 **Documentação**: Revise os documentos SRS e arquitetura
+- 🤝 **Colaboração**: Aberto a parcerias e integrações
 
-## Acknowledgments
+## Agradecimentos
 
-- ISO/IEC/IEEE standards community for requirements engineering guidance
-- Open source logistics and transportation projects for inspiration
-- Cloud-native and microservices community for architectural patterns
+- Comunidade de padrões ISO/IEC/IEEE pela orientação em engenharia de requisitos
+- Projetos de logística e transporte open source pela inspiração
+- Comunidade cloud-native e microservices pelos padrões arquiteturais
 
 ---
 
-**"Revolutionizing freight management through intelligent technology"**
+**"Revolucionando a gestão de frete através de tecnologia inteligente"**
 
-*This project aims to transform the logistics industry by combining advanced algorithms, real-time data processing, and user-centric design to create the next generation of freight management systems.*
+*Este projeto visa transformar a indústria de logística combinando algoritmos avançados, processamento de dados em tempo real e design centrado no usuário para criar a próxima geração de sistemas de gestão de frete.*
