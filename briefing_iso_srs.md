@@ -1,286 +1,286 @@
-# Software Requirements Specification (SRS) - Frete Inteligente
-## Briefing Document Following ISO/IEC/IEEE 29148:2018 Standards
+# Especificação de Requisitos de Software (ERS) - Frete Inteligente
+## Documento Briefing seguindo as normas ISO/IEC/IEEE 29148:2018
 
-**Document Version:** 1.0  
-**Date:** 2025-08-29  
-**Project:** Frete Inteligente (Intelligent Freight Management System)  
-**Classification:** Internal Use  
+**Versão do Documento:** 1.0  
+**Data:** 29/08/2025  
+**Projeto:** Frete Inteligente (Sistema Inteligente de Gestão de Fretes)  
+**Classificação:** Uso Interno  
 
-## Table of Contents
+## Índice
 
-1. [Introduction](#1-introduction)
-2. [Overall Description](#2-overall-description)
-3. [Specific Requirements](#3-specific-requirements)
-4. [System Features](#4-system-features)
-5. [External Interface Requirements](#5-external-interface-requirements)
-6. [Non-functional Requirements](#6-non-functional-requirements)
-7. [Other Requirements](#7-other-requirements)
+1. [Introdução](#1-introducao)
+2. [Descrição Geral](#2-descricao-geral)
+3. [Requisitos Específicos](#3-requisitos-especificos)
+4. [Funcionalidades do Sistema](#4-funcionalidades-do-sistema)
+5. [Requisitos de Interface Externa](#5-requisitos-de-interface-externa)
+6. [Requisitos Não Funcionais](#6-requisitos-nao-funcionais)
+7. [Outros Requisitos](#7-outros-requisitos)
 
-## 1. Introduction
+## 1. Introdução
 
-### 1.1 Purpose
-This document specifies the software requirements for the Frete Inteligente (Intelligent Freight Management System), following ISO/IEC/IEEE 29148:2018 standards for systems and software engineering requirements processes and information items.
+### 1.1 Objetivo
+Este documento especifica os requisitos de software para o Frete Inteligente (Sistema Inteligente de Gestão de Fretes), seguindo os padrões da ISO/IEC/IEEE 29148:2018 para processos de requisitos de sistemas e engenharia de software.
 
-The system aims to optimize freight operations through intelligent route planning, real-time tracking, predictive analytics, and automated logistics management.
+O sistema visa otimizar operações de frete por meio de planejamento inteligente de rotas, rastreamento em tempo real, análises preditivas e gestão logística automatizada.
 
-### 1.2 Scope
-The Frete Inteligente system shall provide:
-- Intelligent route optimization using machine learning algorithms
-- Real-time freight tracking and monitoring
-- Predictive maintenance for fleet management
-- Automated load planning and optimization
-- Integration with third-party logistics providers
-- Comprehensive reporting and analytics dashboard
-- Mobile applications for drivers and logistics coordinators
+### 1.2 Escopo
+O sistema Frete Inteligente deverá fornecer:
+- Otimização inteligente de rotas utilizando algoritmos de aprendizado de máquina
+- Rastreamento e monitoramento de fretes em tempo real
+- Manutenção preditiva para gestão de frotas
+- Planejamento e otimização automática de cargas
+- Integração com provedores logísticos terceirizados
+- Painel de relatórios e análises abrangente
+- Aplicativos móveis para motoristas e coordenadores logísticos
 
-### 1.3 Definitions, Acronyms, and Abbreviations
-- **API**: Application Programming Interface
-- **GPS**: Global Positioning System
-- **IoT**: Internet of Things
-- **ML**: Machine Learning
-- **REST**: Representational State Transfer
-- **SLA**: Service Level Agreement
-- **TMS**: Transportation Management System
-- **WMS**: Warehouse Management System
+### 1.3 Definições, Acrônimos e Abreviações
+- **API**: Interface de Programação de Aplicações
+- **GPS**: Sistema de Posicionamento Global
+- **IoT**: Internet das Coisas
+- **ML**: Aprendizado de Máquina
+- **REST**: Transferência de Estado Representacional
+- **SLA**: Acordo de Nível de Serviço
+- **TMS**: Sistema de Gerenciamento de Transporte
+- **WMS**: Sistema de Gerenciamento de Armazém
 
-### 1.4 References
-- ISO/IEC/IEEE 29148:2018 - Systems and software engineering — Life cycle processes — Requirements engineering
-- ISO 9001:2015 - Quality Management Systems
-- ISO/IEC 27001:2013 - Information Security Management
+### 1.4 Referências
+- ISO/IEC/IEEE 29148:2018 - Engenharia de sistemas e software — Processos de ciclo de vida — Engenharia de requisitos
+- ISO 9001:2015 - Sistemas de Gestão da Qualidade
+- ISO/IEC 27001:2013 - Gestão de Segurança da Informação
 
-### 1.5 Overview
-This document is organized according to ISO/IEC/IEEE 29148:2018 structure, covering functional requirements, performance requirements, design constraints, and quality attributes.
+### 1.5 Visão Geral
+Este documento está organizado conforme a estrutura da ISO/IEC/IEEE 29148:2018, abordando requisitos funcionais, de desempenho, restrições de projeto e atributos de qualidade.
 
-## 2. Overall Description
+## 2. Descrição Geral
 
-### 2.1 Product Perspective
-The Frete Inteligente system is a comprehensive logistics management platform designed to integrate with existing enterprise systems including:
-- Enterprise Resource Planning (ERP) systems
-- Warehouse Management Systems (WMS)
-- Customer Relationship Management (CRM) systems
-- Third-party logistics provider APIs
-- IoT sensors and tracking devices
+### 2.1 Perspectiva do Produto
+O sistema Frete Inteligente é uma plataforma abrangente de gestão logística projetada para integração com sistemas empresariais existentes, incluindo:
+- Sistemas de Planejamento de Recursos Empresariais (ERP)
+- Sistemas de Gerenciamento de Armazém (WMS)
+- Sistemas de Gestão de Relacionamento com o Cliente (CRM)
+- APIs de provedores logísticos terceirizados
+- Sensores IoT e dispositivos de rastreamento
 
-### 2.2 Product Functions
-Major system functions include:
-- **Route Optimization**: ML-powered algorithms for optimal route planning
-- **Fleet Management**: Vehicle tracking, maintenance scheduling, and performance monitoring
-- **Load Planning**: Automated cargo optimization and space utilization
-- **Predictive Analytics**: Forecasting for demand, maintenance, and delivery times
-- **Real-time Monitoring**: Live tracking of shipments and fleet status
-- **Document Management**: Digital handling of shipping documents and compliance
-- **Financial Management**: Cost calculation, billing, and payment processing
-- **Reporting**: Comprehensive analytics and business intelligence
+### 2.2 Funcionalidades do Produto
+Principais funcionalidades do sistema incluem:
+- **Otimização de Rotas**: Algoritmos baseados em ML para planejamento de rotas ideal
+- **Gestão de Frotas**: Rastreamento de veículos, agendamento de manutenção e monitoramento de desempenho
+- **Planejamento de Cargas**: Otimização automática de carga e uso do espaço
+- **Análise Preditiva**: Previsão de demanda, manutenção e tempos de entrega
+- **Monitoramento em Tempo Real**: Rastreamento ao vivo de remessas e status da frota
+- **Gestão de Documentos**: Manipulação digital de documentos de embarque e conformidade
+- **Gestão Financeira**: Cálculo de custos, faturamento e processamento de pagamentos
+- **Relatórios**: Análises abrangentes e inteligência de negócios
 
-### 2.3 User Classes and Characteristics
-- **Logistics Managers**: High-level oversight and strategic planning
-- **Dispatchers**: Day-to-day operations and route assignments
-- **Drivers**: Mobile access for route information and status updates
-- **Customers**: Shipment tracking and delivery notifications
-- **System Administrators**: Platform configuration and maintenance
-- **API Consumers**: Third-party integrations and data exchange
+### 2.3 Classes e Características dos Usuários
+- **Gerentes Logísticos**: Supervisão de alto nível e planejamento estratégico
+- **Despachantes**: Operações diárias e atribuição de rotas
+- **Motoristas**: Acesso móvel a informações de rotas e atualizações de status
+- **Clientes**: Rastreamento de remessas e notificações de entrega
+- **Administradores do Sistema**: Configuração e manutenção da plataforma
+- **Consumidores de API**: Integrações de terceiros e troca de dados
 
-### 2.4 Operating Environment
-- **Server Environment**: Cloud-based infrastructure (AWS/Azure/GCP)
-- **Database**: PostgreSQL with Redis caching
-- **Web Interface**: Modern browsers supporting HTML5, CSS3, JavaScript ES6+
-- **Mobile Applications**: iOS 14+ and Android 10+
-- **Integration**: RESTful APIs and webhook support
+### 2.4 Ambiente Operacional
+- **Servidor**: Infraestrutura em nuvem (AWS/Azure/GCP)
+- **Banco de Dados**: PostgreSQL com cache Redis
+- **Interface Web**: Navegadores modernos suportando HTML5, CSS3, JavaScript ES6+
+- **Aplicativos Móveis**: iOS 14+ e Android 10+
+- **Integração**: APIs RESTful e suporte a webhook
 
-### 2.5 Design and Implementation Constraints
-- Compliance with local transportation regulations
-- GDPR and data privacy requirements
-- 99.9% system availability SLA
-- Response time under 3 seconds for critical operations
-- Scalability to handle 10,000+ concurrent users
-- Multi-language support (Portuguese, English, Spanish)
+### 2.5 Restrições de Projeto e Implementação
+- Conformidade com regulamentações locais de transporte
+- Requisitos de privacidade de dados e GDPR
+- SLA de disponibilidade do sistema de 99,9%
+- Tempo de resposta inferior a 3 segundos para operações críticas
+- Escalabilidade para mais de 10.000 usuários simultâneos
+- Suporte multilíngue (Português, Inglês, Espanhol)
 
-### 2.6 User Documentation
-- Administrator Guide
-- User Manual for each user class
-- API Documentation
-- Mobile App User Guide
-- Integration Guide for third-party developers
+### 2.6 Documentação do Usuário
+- Guia do Administrador
+- Manual do Usuário para cada classe de usuário
+- Documentação da API
+- Guia do Usuário do Aplicativo Móvel
+- Guia de Integração para desenvolvedores terceiros
 
-### 2.7 Assumptions and Dependencies
-- Reliable internet connectivity for real-time operations
-- GPS availability for vehicle tracking
-- Third-party APIs remain accessible and stable
-- IoT sensors provide accurate data
-- Users have appropriate devices and browser/app versions
+### 2.7 Suposições e Dependências
+- Conectividade à internet confiável para operações em tempo real
+- Disponibilidade de GPS para rastreamento de veículos
+- APIs de terceiros acessíveis e estáveis
+- Sensores IoT fornecendo dados precisos
+- Usuários com dispositivos e versões de navegador/aplicativo adequadas
 
-## 3. Specific Requirements
+## 3. Requisitos Específicos
 
-### 3.1 Functional Requirements
+### 3.1 Requisitos Funcionais
 
-#### 3.1.1 Route Optimization Module
-**REQ-001**: The system shall calculate optimal routes considering traffic, weather, vehicle constraints, and delivery time windows.
-- **Priority**: High
-- **Risk**: Medium
-- **Verification**: Algorithm testing with sample data
+#### 3.1.1 Módulo de Otimização de Rotas
+**REQ-001**: O sistema deve calcular rotas ótimas considerando tráfego, clima, restrições de veículos e janelas de entrega.
+- **Prioridade**: Alta
+- **Risco**: Médio
+- **Verificação**: Teste de algoritmo com dados de amostra
 
-**REQ-002**: The system shall recalculate routes dynamically based on real-time conditions.
-- **Priority**: High
-- **Risk**: Medium
-- **Verification**: Live testing with traffic simulation
+**REQ-002**: O sistema deve recalcular rotas dinamicamente com base em condições em tempo real.
+- **Prioridade**: Alta
+- **Risco**: Médio
+- **Verificação**: Testes ao vivo com simulação de tráfego
 
-#### 3.1.2 Fleet Management Module
-**REQ-003**: The system shall track vehicle location with ±5-meter accuracy.
-- **Priority**: High
-- **Risk**: Low
-- **Verification**: GPS accuracy testing
+#### 3.1.2 Módulo de Gestão de Frotas
+**REQ-003**: O sistema deve rastrear a localização do veículo com precisão de ±5 metros.
+- **Prioridade**: Alta
+- **Risco**: Baixo
+- **Verificação**: Teste de precisão do GPS
 
-**REQ-004**: The system shall monitor vehicle health and predict maintenance needs.
-- **Priority**: Medium
-- **Risk**: Medium
-- **Verification**: Historical data analysis
+**REQ-004**: O sistema deve monitorar a saúde do veículo e prever necessidades de manutenção.
+- **Prioridade**: Média
+- **Risco**: Médio
+- **Verificação**: Análise de dados históricos
 
-#### 3.1.3 Load Planning Module
-**REQ-005**: The system shall optimize cargo loading to maximize space utilization.
-- **Priority**: High
-- **Risk**: Medium
-- **Verification**: 3D simulation testing
+#### 3.1.3 Módulo de Planejamento de Cargas
+**REQ-005**: O sistema deve otimizar o carregamento da carga para máxima utilização do espaço.
+- **Prioridade**: Alta
+- **Risco**: Médio
+- **Verificação**: Teste de simulação 3D
 
-**REQ-006**: The system shall ensure compliance with weight and safety regulations.
-- **Priority**: High
-- **Risk**: Low
-- **Verification**: Regulatory compliance testing
+**REQ-006**: O sistema deve garantir conformidade com regulamentações de peso e segurança.
+- **Prioridade**: Alta
+- **Risco**: Baixo
+- **Verificação**: Teste de conformidade regulatória
 
-#### 3.1.4 Customer Interface Module
-**REQ-007**: The system shall provide real-time shipment tracking to customers.
-- **Priority**: High
-- **Risk**: Low
-- **Verification**: End-to-end tracking test
+#### 3.1.4 Módulo de Interface do Cliente
+**REQ-007**: O sistema deve fornecer rastreamento de remessas em tempo real para clientes.
+- **Prioridade**: Alta
+- **Risco**: Baixo
+- **Verificação**: Teste de rastreamento ponta a ponta
 
-**REQ-008**: The system shall send automated notifications for delivery updates.
-- **Priority**: Medium
-- **Risk**: Low
-- **Verification**: Notification delivery testing
+**REQ-008**: O sistema deve enviar notificações automáticas de atualização de entrega.
+- **Prioridade**: Média
+- **Risco**: Baixo
+- **Verificação**: Teste de entrega de notificações
 
-## 4. System Features
+## 4. Funcionalidades do Sistema
 
-### 4.1 Intelligent Route Planning
-**Description**: ML-powered route optimization considering multiple variables
-**Stimulus/Response**: Route request triggers algorithmic calculation
-**Associated Functional Requirements**: REQ-001, REQ-002
+### 4.1 Planejamento Inteligente de Rotas
+**Descrição**: Otimização de rotas com ML considerando múltiplas variáveis  
+**Estímulo/Resposta**: Pedido de rota aciona cálculo algorítmico  
+**Requisitos Funcionais Associados**: REQ-001, REQ-002  
 
-### 4.2 Real-time Fleet Tracking
-**Description**: GPS-based vehicle monitoring with live status updates
-**Stimulus/Response**: Vehicle movement triggers location updates
-**Associated Functional Requirements**: REQ-003
+### 4.2 Rastreamento em Tempo Real da Frota
+**Descrição**: Monitoramento de veículos via GPS com atualizações ao vivo  
+**Estímulo/Resposta**: Movimento do veículo aciona atualização de localização  
+**Requisitos Funcionais Associados**: REQ-003  
 
-### 4.3 Predictive Maintenance
-**Description**: IoT sensor data analysis for maintenance forecasting
-**Stimulus/Response**: Sensor data triggers maintenance predictions
-**Associated Functional Requirements**: REQ-004
+### 4.3 Manutenção Preditiva
+**Descrição**: Análise de dados de sensores IoT para previsão de manutenção  
+**Estímulo/Resposta**: Dados de sensores acionam previsão de manutenção  
+**Requisitos Funcionais Associados**: REQ-004  
 
-### 4.4 Load Optimization
-**Description**: 3D cargo planning with weight and space constraints
-**Stimulus/Response**: Load request triggers optimization algorithm
-**Associated Functional Requirements**: REQ-005, REQ-006
+### 4.4 Otimização de Cargas
+**Descrição**: Planejamento 3D de cargas com restrições de peso e espaço  
+**Estímulo/Resposta**: Pedido de carga aciona algoritmo de otimização  
+**Requisitos Funcionais Associados**: REQ-005, REQ-006  
 
-### 4.5 Customer Portal
-**Description**: Web and mobile interfaces for shipment tracking
-**Stimulus/Response**: Customer query triggers status retrieval
-**Associated Functional Requirements**: REQ-007, REQ-008
+### 4.5 Portal do Cliente
+**Descrição**: Interfaces web e móvel para rastreamento de remessas  
+**Estímulo/Resposta**: Consulta do cliente aciona recuperação de status  
+**Requisitos Funcionais Associados**: REQ-007, REQ-008  
 
-## 5. External Interface Requirements
+## 5. Requisitos de Interface Externa
 
-### 5.1 User Interfaces
-- **Web Application**: Responsive design supporting 1024x768+ resolution
-- **Mobile Applications**: Native iOS and Android apps
-- **Dashboard**: Real-time analytics with customizable widgets
-- **Accessibility**: WCAG 2.1 AA compliance
+### 5.1 Interfaces de Usuário
+- **Aplicação Web**: Design responsivo suportando resolução 1024x768+
+- **Aplicativos Móveis**: Apps nativos para iOS e Android
+- **Dashboard**: Análises em tempo real com widgets personalizáveis
+- **Acessibilidade**: Conformidade com WCAG 2.1 AA
 
-### 5.2 Hardware Interfaces
-- **GPS Modules**: Standard NMEA 0183 protocol support
-- **IoT Sensors**: MQTT protocol for data transmission
-- **Mobile Devices**: Camera access for document scanning
-- **Printers**: Thermal and laser printer support for labels
+### 5.2 Interfaces de Hardware
+- **Módulos GPS**: Suporte ao protocolo padrão NMEA 0183
+- **Sensores IoT**: Protocolo MQTT para transmissão de dados
+- **Dispositivos Móveis**: Acesso à câmera para escaneamento de documentos
+- **Impressoras**: Suporte a impressoras térmicas e a laser para etiquetas
 
-### 5.3 Software Interfaces
-- **ERP Systems**: SAP, Oracle, Microsoft Dynamics integration
-- **Payment Gateways**: Stripe, PayPal, local payment processors
-- **Mapping Services**: Google Maps, OpenStreetMap APIs
-- **Weather Services**: OpenWeatherMap, WeatherAPI integration
+### 5.3 Interfaces de Software
+- **Sistemas ERP**: Integração com SAP, Oracle, Microsoft Dynamics
+- **Gateways de Pagamento**: Stripe, PayPal, processadores locais
+- **Serviços de Mapas**: APIs do Google Maps, OpenStreetMap
+- **Serviços Climáticos**: Integração com OpenWeatherMap, WeatherAPI
 
-### 5.4 Communication Interfaces
-- **REST APIs**: JSON-based web services
-- **WebSocket**: Real-time data streaming
-- **HTTPS**: Encrypted data transmission
-- **Email/SMS**: Notification services
+### 5.4 Interfaces de Comunicação
+- **APIs REST**: Serviços web baseados em JSON
+- **WebSocket**: Transmissão de dados em tempo real
+- **HTTPS**: Transmissão de dados criptografados
+- **Email/SMS**: Serviços de notificação
 
-## 6. Non-functional Requirements
+## 6. Requisitos Não Funcionais
 
-### 6.1 Performance Requirements
-- **Response Time**: 95% of operations complete within 3 seconds
-- **Throughput**: Support 1,000 concurrent route calculations
-- **Capacity**: Handle 10,000 active shipments simultaneously
-- **Scalability**: Horizontal scaling capability
+### 6.1 Requisitos de Desempenho
+- **Tempo de Resposta**: 95% das operações concluídas em até 3 segundos
+- **Taxa de Processamento**: Suporte a 1.000 cálculos de rotas simultâneos
+- **Capacidade**: Gerenciar 10.000 remessas ativas simultaneamente
+- **Escalabilidade**: Capacidade de escalonamento horizontal
 
-### 6.2 Security Requirements
-- **Authentication**: Multi-factor authentication for administrators
-- **Authorization**: Role-based access control (RBAC)
-- **Data Encryption**: AES-256 for data at rest, TLS 1.3 for data in transit
-- **Audit Trail**: Comprehensive logging of all system activities
+### 6.2 Requisitos de Segurança
+- **Autenticação**: Autenticação multifator para administradores
+- **Autorização**: Controle de acesso baseado em funções (RBAC)
+- **Criptografia de Dados**: AES-256 para dados em repouso, TLS 1.3 para dados em trânsito
+- **Auditoria**: Registro abrangente de todas as atividades do sistema
 
-### 6.3 Reliability Requirements
-- **Availability**: 99.9% uptime (8.76 hours downtime per year)
-- **MTBF**: Mean Time Between Failures > 720 hours
-- **MTTR**: Mean Time To Repair < 4 hours
-- **Data Backup**: Automated daily backups with point-in-time recovery
+### 6.3 Requisitos de Confiabilidade
+- **Disponibilidade**: 99,9% de uptime (máx. 8,76 horas de indisponibilidade/ano)
+- **MTBF**: Tempo médio entre falhas > 720 horas
+- **MTTR**: Tempo médio de reparo < 4 horas
+- **Backup de Dados**: Backups diários automatizados com recuperação pontual
 
-### 6.4 Usability Requirements
-- **Learning Curve**: New users productive within 2 hours of training
-- **Error Rate**: Less than 1% user error rate for common operations
-- **User Satisfaction**: Minimum 4.0/5.0 rating in usability surveys
-- **Help System**: Context-sensitive help and documentation
+### 6.4 Requisitos de Usabilidade
+- **Curva de Aprendizado**: Novos usuários produtivos após 2 horas de treinamento
+- **Taxa de Erro**: Menos de 1% de erro do usuário nas operações comuns
+- **Satisfação do Usuário**: Mínimo 4,0/5,0 em pesquisas de usabilidade
+- **Sistema de Ajuda**: Ajuda contextual e documentação
 
-### 6.5 Portability Requirements
-- **Browser Support**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
-- **Mobile OS**: iOS 14+, Android 10+
-- **Cloud Platforms**: AWS, Azure, Google Cloud Platform
-- **Database Portability**: Support for PostgreSQL, MySQL, SQL Server
+### 6.5 Requisitos de Portabilidade
+- **Suporte a Navegadores**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+- **OS Mobile**: iOS 14+, Android 10+
+- **Plataformas em Nuvem**: AWS, Azure, Google Cloud Platform
+- **Portabilidade de Banco de Dados**: Suporte a PostgreSQL, MySQL, SQL Server
 
-### 6.6 Compliance Requirements
-- **Data Privacy**: GDPR, LGPD (Lei Geral de Proteção de Dados)
-- **Transportation**: Local DOT regulations compliance
-- **Quality Standards**: ISO 9001:2015 processes
-- **Security Standards**: ISO/IEC 27001:2013 implementation
+### 6.6 Requisitos de Conformidade
+- **Privacidade de Dados**: GDPR, LGPD (Lei Geral de Proteção de Dados)
+- **Transporte**: Conformidade com regulamentações locais DOT
+- **Normas de Qualidade**: Processos ISO 9001:2015
+- **Normas de Segurança**: Implementação ISO/IEC 27001:2013
 
-## 7. Other Requirements
+## 7. Outros Requisitos
 
-### 7.1 Internationalization Requirements
-- **Languages**: Portuguese (primary), English, Spanish
-- **Localization**: Currency, date/time, number formats
-- **Time Zones**: Automatic handling of multiple time zones
-- **Cultural Considerations**: Local business practices adaptation
+### 7.1 Requisitos de Internacionalização
+- **Idiomas**: Português (primário), Inglês, Espanhol
+- **Localização**: Formatos de moeda, data/hora, números
+- **Fusos Horários**: Tratamento automático de múltiplos fusos
+- **Cultura**: Adaptação às práticas comerciais locais
 
-### 7.2 Legal Requirements
-- **Data Retention**: 7-year retention period for financial records
-- **Privacy Rights**: Right to data portability and deletion
-- **Contract Terms**: Digital signature support
-- **Liability**: System limitation of liability clauses
+### 7.2 Requisitos Legais
+- **Retenção de Dados**: Período de retenção de 7 anos para registros financeiros
+- **Direitos de Privacidade**: Direito à portabilidade e exclusão de dados
+- **Termos Contratuais**: Suporte a assinatura digital
+- **Responsabilidade**: Cláusulas de limitação de responsabilidade do sistema
 
-### 7.3 Maintenance Requirements
-- **Update Schedule**: Monthly security patches, quarterly feature updates
-- **Maintenance Windows**: Scheduled downtime < 4 hours per month
-- **Documentation**: Automated generation of technical documentation
-- **Training**: Annual training updates for users
+### 7.3 Requisitos de Manutenção
+- **Cronograma de Atualizações**: Patches de segurança mensais, atualizações de funcionalidade trimestrais
+- **Janelas de Manutenção**: Paradas programadas < 4 horas/mês
+- **Documentação**: Geração automatizada de documentação técnica
+- **Treinamento**: Atualizações anuais de treinamento para usuários
 
-### 7.4 Business Rules
-- **Pricing**: Dynamic pricing based on distance, weight, and priority
-- **Capacity**: Maximum load limits per vehicle type
-- **Routes**: Restricted routes based on vehicle classifications
-- **Scheduling**: Business hours and holiday calendar considerations
+### 7.4 Regras de Negócio
+- **Precificação**: Precificação dinâmica baseada em distância, peso e prioridade
+- **Capacidade**: Limites máximos de carga conforme tipo de veículo
+- **Rotas**: Rotas restritas conforme classificação de veículos
+- **Agendamento**: Consideração de horários comerciais e feriados
 
 ---
 
-**Document Control**
-- **Author**: System Requirements Team
-- **Reviewers**: Logistics Domain Expert, Technical Architect, Quality Assurance Lead
-- **Approval**: Project Manager, Product Owner
-- **Next Review Date**: 2025-11-29
-- **Change Control**: All changes require impact assessment and stakeholder approval
+**Controle de Documento**
+- **Autor**: Equipe de Requisitos do Sistema
+- **Revisores**: Especialista em Logística, Arquiteto Técnico, Líder de Garantia de Qualidade
+- **Aprovação**: Gerente de Projeto, Product Owner
+- **Próxima Revisão:** 29/11/2025
+- **Controle de Mudanças**: Todas as alterações requerem avaliação de impacto e aprovação das partes interessadas
 
-This document serves as the foundation for system design, development, testing, and validation activities for the Frete Inteligente project.
+Este documento serve como base para atividades de projeto, desenvolvimento, testes e validação do sistema Frete Inteligente.
