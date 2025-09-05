@@ -1,139 +1,139 @@
-# Frete Inteligente - Intelligent Freight Management System
+# Frete Inteligente - Sistema Inteligente de Gestão de Fretes
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.0-blue.svg)]()
+[![Licença: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Versão](https://img.shields.io/badge/Version-1.0-blue.svg)]()
 [![Status](https://img.shields.io/badge/Status-Planning-orange.svg)]()
 
-## Project Overview
+## Visão Geral do Projeto
 
-**Frete Inteligente** is a comprehensive intelligent freight and logistics management system designed to revolutionize the transportation industry through advanced technology, machine learning, and real-time optimization.
+**Frete Inteligente** é um sistema inteligente e abrangente de gestão de fretes e logística, projetado para revolucionar o setor de transporte por meio de tecnologia avançada, aprendizado de máquina e otimização em tempo real.
 
-### Key Features
+### Principais Funcionalidades
 
-🚚 **Intelligent Route Optimization** - ML-powered algorithms for optimal route planning  
-📍 **Real-time Fleet Tracking** - GPS and IoT integration for live vehicle monitoring  
-📊 **Predictive Analytics** - Forecasting for maintenance, demand, and delivery times  
-📦 **Automated Load Planning** - 3D cargo optimization for maximum efficiency  
-📱 **Multi-platform Access** - Web dashboard and mobile applications  
-🔗 **Third-party Integration** - Seamless connection with ERP and logistics providers  
+🚚 **Otimização Inteligente de Rotas** - Algoritmos baseados em ML para planejamento de rotas otimizadas  
+📍 **Rastreamento em Tempo Real da Frota** - Integração de GPS e IoT para monitoramento veicular ao vivo  
+📊 **Analytics Preditivo** - Previsão para manutenção, demanda e tempos de entrega  
+📦 **Planejamento Automatizado de Cargas** - Otimização 3D de carga para máxima eficiência  
+📱 **Acesso Multi-plataforma** - Dashboard web e aplicativos móveis  
+🔗 **Integração com Terceiros** - Conexão transparente com ERP e provedores logísticos  
 
-## Documentation Structure
+## Estrutura da Documentação
 
-This repository contains comprehensive project documentation following ISO/IEC/IEEE 29148:2018 standards:
+Este repositório contém documentação abrangente do projeto seguindo o padrão ISO/IEC/IEEE 29148:2018:
 
-### 📋 Requirements Documentation
-- **[briefing_iso_srs.md](./briefing_iso_srs.md)** - Complete Software Requirements Specification following ISO standards
-- **[srs.md](./srs.md)** - Executive summary and quick reference guide
+### 📋 Documentação de Requisitos
+- **[briefing_iso_srs.md](./briefing_iso_srs.md)** - Especificação completa de requisitos de software conforme padrões ISO
+- **[srs.md](./srs.md)** - Resumo executivo e guia rápido de referência
 
-### 🏗️ Architecture Documentation  
-- **[architecture.md](./architecture.md)** - Detailed system architecture and technical design
+### 🏗️ Documentação de Arquitetura  
+- **[architecture.md](./architecture.md)** - Arquitetura detalhada do sistema e design técnico
 
-## Project Scope
+## Escopo do Projeto
 
-The Frete Inteligente system addresses critical challenges in the freight and logistics industry:
+O sistema Frete Inteligente aborda desafios críticos da indústria de fretes e logística:
 
-- **Cost Optimization**: Reduce transportation costs by 15-20%
-- **Delivery Accuracy**: Improve on-time delivery to 95%+
-- **Operational Efficiency**: Automate manual planning processes
-- **Real-time Visibility**: Provide complete shipment transparency
-- **Predictive Maintenance**: Reduce vehicle downtime
-- **Regulatory Compliance**: Ensure adherence to transportation regulations
+- **Otimização de Custos**: Reduzir custos de transporte em 15-20%
+- **Precisão nas Entregas**: Melhorar entregas pontuais para mais de 95%
+- **Eficiência Operacional**: Automatizar processos manuais de planejamento
+- **Visibilidade em Tempo Real**: Proporcionar transparência total da carga
+- **Manutenção Preditiva**: Reduzir tempo de inatividade dos veículos
+- **Conformidade Regulatória**: Garantir adesão às normas de transporte
 
-## Target Users
+## Usuários-Alvo
 
-- **Logistics Managers** - Strategic planning and oversight
-- **Dispatchers** - Daily operations and route management  
-- **Drivers** - Mobile access and status updates
-- **Customers** - Shipment tracking and notifications
-- **System Administrators** - Platform configuration and maintenance
+- **Gestores de Logística** - Planejamento estratégico e supervisão
+- **Despachantes** - Operações diárias e gestão de rotas  
+- **Motoristas** - Acesso móvel e atualização de status
+- **Clientes** - Rastreamento e notificações de envio
+- **Administradores de Sistema** - Configuração e manutenção da plataforma
 
-## Technology Highlights
+## Destaques Tecnológicos
 
-- **Cloud-Native Architecture** - Scalable microservices on Kubernetes
-- **Machine Learning** - TensorFlow-powered optimization algorithms
-- **Real-time Processing** - Event-driven architecture with Kafka
-- **Modern Frontend** - React.js web app and React Native mobile apps
-- **Enterprise Integration** - RESTful APIs and webhook support
-- **Multi-language Support** - Portuguese, English, and Spanish
+- **Arquitetura Cloud-Native** - Microsserviços escaláveis em Kubernetes
+- **Machine Learning** - Algoritmos de otimização com TensorFlow
+- **Processamento em Tempo Real** - Arquitetura orientada a eventos com Kafka
+- **Frontend Moderno** - Web app em React.js e aplicativos móveis em React Native
+- **Integração Empresarial** - APIs RESTful e suporte a webhooks
+- **Suporte Multilíngue** - Português, Inglês e Espanhol
 
-## Compliance & Standards
+## Conformidade & Padrões
 
-- ✅ **ISO/IEC/IEEE 29148:2018** - Requirements engineering standards
-- ✅ **GDPR & LGPD** - Data privacy and protection compliance
-- ✅ **ISO 9001:2015** - Quality management processes
-- ✅ **ISO/IEC 27001:2013** - Information security management
-- ✅ **Transportation Regulations** - Local DOT compliance
+- ✅ **ISO/IEC/IEEE 29148:2018** - Padrões de engenharia de requisitos
+- ✅ **GDPR & LGPD** - Conformidade com privacidade e proteção de dados
+- ✅ **ISO 9001:2015** - Processos de gestão da qualidade
+- ✅ **ISO/IEC 27001:2013** - Gestão de segurança da informação
+- ✅ **Regulamentos de Transporte** - Conformidade com DOT local
 
-## Getting Started
+## Primeiros Passos
 
-### Prerequisites
-- Node.js 18+ and Python 3.9+
-- Docker and Kubernetes cluster
-- PostgreSQL 14+ and Redis 6+
-- Cloud provider account (AWS/Azure/GCP)
+### Pré-requisitos
+- Java/SpringBoot, Node.js 18+ e Python 3.9+
+- Docker e cluster Kubernetes
+- PostgreSQL 14+ e Redis 6+
+- Conta em provedor de nuvem (AWS/Azure/GCP)
 
-### Quick Start
+### Execução Rápida
 ```bash
-# Clone the repository
+# Clone o repositório
 git clone https://github.com/slnntk/frete-inteligente.git
 
-# Review the requirements specification
+# Consulte a especificação de requisitos
 cat briefing_iso_srs.md
 
-# Review the system architecture  
+# Consulte a arquitetura do sistema  
 cat architecture.md
 
-# Set up development environment (coming soon)
+# Configure o ambiente de desenvolvimento (em breve)
 # npm install && docker-compose up
 ```
 
-## Project Status
+## Status do Projeto
 
-🟡 **Current Phase**: Requirements Analysis & System Design  
-📅 **Started**: August 2025  
-👥 **Team**: Development team onboarding  
-📈 **Next Milestone**: Technical architecture validation  
+🟡 **Fase Atual**: Análise de Requisitos & Design do Sistema  
+📅 **Início**: Agosto de 2025  
+👥 **Equipe**: Onboarding da equipe de desenvolvimento  
+📈 **Próximo Marco**: Validação da arquitetura técnica  
 
 ### Roadmap
 
-- [x] Requirements specification (ISO standard compliance)
-- [x] System architecture design
-- [ ] Technical proof of concept
-- [ ] MVP development
-- [ ] Beta testing program
-- [ ] Production deployment
+- [x] Especificação de requisitos (conformidade ISO)
+- [x] Design da arquitetura do sistema
+- [ ] Prova de conceito técnica
+- [ ] Desenvolvimento do MVP
+- [ ] Programa de testes beta
+- [ ] Implantação em produção
 
-## Contributing
+## Contribuição
 
-We welcome contributions to the Frete Inteligente project! Please read our contributing guidelines and code of conduct.
+Contribuições ao projeto Frete Inteligente são bem-vindas! Leia nossas diretrizes de contribuição e código de conduta.
 
-### Development Workflow
-1. Review the [SRS documentation](./briefing_iso_srs.md)
-2. Check the [architecture design](./architecture.md)  
-3. Follow the coding standards and practices
-4. Submit pull requests with comprehensive testing
+### Fluxo de Desenvolvimento
+1. Revise a [documentação SRS](./briefing_iso_srs.md)
+2. Confira o [design da arquitetura](./architecture.md)  
+3. Siga os padrões e práticas de codificação
+4. Envie pull requests com testes abrangentes
 
-## License
+## Licença
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## Support
+## Suporte
 
-For questions, issues, or collaboration opportunities:
+Para dúvidas, problemas ou oportunidades de colaboração:
 
-- 📧 **Email**: [Project Contact]
+- 📧 **Email**: [Contato do Projeto]
 - 💬 **Issues**: [GitHub Issues](https://github.com/slnntk/frete-inteligente/issues)
-- 📖 **Documentation**: Review the SRS and architecture documents
-- 🤝 **Collaboration**: Open to partnerships and integrations
+- 📖 **Documentação**: Consulte os documentos SRS e de arquitetura
+- 🤝 **Colaboração**: Aberto a parcerias e integrações
 
-## Acknowledgments
+## Agradecimentos
 
-- ISO/IEC/IEEE standards community for requirements engineering guidance
-- Open source logistics and transportation projects for inspiration
-- Cloud-native and microservices community for architectural patterns
+- Comunidade de padrões ISO/IEC/IEEE pela orientação em engenharia de requisitos
+- Projetos open source de logística e transporte pela inspiração
+- Comunidade cloud-native e de microsserviços pelos padrões arquiteturais
 
 ---
 
-**"Revolutionizing freight management through intelligent technology"**
+**"Revolucionando a gestão de fretes através da tecnologia inteligente"**
 
-*This project aims to transform the logistics industry by combining advanced algorithms, real-time data processing, and user-centric design to create the next generation of freight management systems.*
+*Este projeto visa transformar a indústria de logística combinando algoritmos avançados, processamento de dados em tempo real e design centrado no usuário para criar a próxima geração de sistemas de gestão de fretes.*
