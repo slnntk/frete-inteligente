@@ -1,152 +1,152 @@
-# System Architecture Overview
-## Frete Inteligente - Intelligent Freight Management System
+# Visão Geral da Arquitetura do Sistema
+## Frete Inteligente - Sistema Inteligente de Gestão de Fretes
 
-**Version:** 1.0  
-**Date:** 2025-08-29  
-**Architecture Type:** Cloud-Native Microservices  
+**Versão:** 1.0  
+**Data:** 29/08/2025  
+**Tipo de Arquitetura:** Microsserviços Cloud-Native  
 
-## Architecture Summary
+## Resumo da Arquitetura
 
-The Frete Inteligente system follows a modern cloud-native microservices architecture designed for scalability, reliability, and maintainability. The system is built on containerized services orchestrated using Kubernetes, with a focus on event-driven communication and real-time data processing.
+O sistema Frete Inteligente segue uma arquitetura moderna de microsserviços cloud-native, projetada para escalabilidade, confiabilidade e facilidade de manutenção. O sistema é construído sobre serviços conteinerizados orquestrados pelo Kubernetes, com foco em comunicação orientada a eventos e processamento de dados em tempo real.
 
-## High-Level Architecture Components
+## Componentes de Alto Nível da Arquitetura
 
-### 1. Presentation Layer
-- **Web Application**: React.js with TypeScript for responsive admin dashboard
-- **Mobile Applications**: React Native for iOS and Android driver/customer apps
-- **API Gateway**: Kong/AWS API Gateway for request routing and authentication
-- **Load Balancer**: NGINX/AWS ALB for traffic distribution
+### 1. Camada de Apresentação
+- **Aplicação Web**: React.js com TypeScript para painel administrativo responsivo
+- **Aplicativos Móveis**: React Native para apps de motorista/cliente em iOS e Android
+- **API Gateway**: Kong/AWS API Gateway para roteamento de requisições e autenticação
+- **Balanceador de Carga**: NGINX/AWS ALB para distribuição de tráfego
 
-### 2. Application Layer (Microservices)
-- **Route Optimization Service**: Python/TensorFlow for ML-based route planning
-- **Fleet Management Service**: Node.js/Express for vehicle tracking and management
-- **Load Planning Service**: Java/Spring Boot for cargo optimization algorithms
-- **Notification Service**: Node.js for real-time alerts and communications
-- **User Management Service**: Java/Spring Security for authentication and authorization
-- **Integration Service**: Node.js for third-party API integrations
+### 2. Camada de Aplicação (Microsserviços)
+- **Serviço de Otimização de Rotas**: Python para planejamento de rotas baseado em ML
+- **Serviço de Gestão de Frotas**: Node.js/Express para rastreamento e gerenciamento de veículos
+- **Serviço de Planejamento de Cargas**: Java/Spring Boot para algoritmos de otimização
+- **Serviço de Notificações**: Node.js para alertas e comunicações em tempo real
+- **Serviço de Gestão de Usuários**: Java/Spring Security para autenticação e autorização
+- **Serviço de Integração**: Node.js para integrações com APIs de terceiros
 
-### 3. Data Layer
-- **Primary Database**: PostgreSQL cluster for transactional data
-- **Cache Layer**: Redis cluster for session management and frequent queries
-- **Time Series DB**: InfluxDB for IoT sensor data and tracking information
-- **Search Engine**: Elasticsearch for advanced search and analytics
-- **File Storage**: AWS S3/Azure Blob for documents and media files
+### 3. Camada de Dados
+- **Banco de Dados Primário**: Cluster PostgreSQL para dados transacionais
+- **Camada de Cache**: Cluster Redis para gerenciamento de sessões e consultas frequentes
+- **Banco de Dados de Séries Temporais**: InfluxDB para dados de sensores IoT e informações de rastreamento
+- **Motor de Busca**: Elasticsearch para buscas avançadas e análises
+- **Armazenamento de Arquivos**: AWS S3/Azure Blob para documentos e arquivos de mídia
 
-### 4. Infrastructure Layer
-- **Container Orchestration**: Kubernetes (EKS/AKS/GKE)
-- **Service Mesh**: Istio for service-to-service communication
-- **Message Broker**: Apache Kafka for event streaming
-- **Monitoring**: Prometheus + Grafana for metrics and alerting
-- **Logging**: ELK Stack (Elasticsearch, Logstash, Kibana)
+### 4. Camada de Infraestrutura
+- **Orquestração de Contêineres**: Kubernetes (EKS/AKS/GKE)
+- **Service Mesh**: Istio para comunicação entre serviços
+- **Broker de Mensagens**: Apache Kafka para streaming de eventos
+- **Monitoramento**: Prometheus + Grafana para métricas e alertas
+- **Log**: ELK Stack (Elasticsearch, Logstash, Kibana)
 
-## Key Architecture Patterns
+## Padrões de Arquitetura Chave
 
-### Microservices Pattern
-- **Service Decomposition**: Business capability-based service boundaries
-- **Data Isolation**: Each service owns its data and database
-- **API-First Design**: RESTful APIs with OpenAPI/Swagger documentation
-- **Independent Deployment**: CI/CD pipelines for each service
+### Padrão de Microsserviços
+- **Decomposição de Serviços**: Limites de serviços baseados em capacidades de negócio
+- **Isolamento de Dados**: Cada serviço possui seus dados e banco de dados
+- **Design API-First**: APIs RESTful com documentação OpenAPI/Swagger
+- **Implantação Independente**: Pipelines CI/CD para cada serviço
 
-### Event-Driven Architecture
-- **Event Sourcing**: Audit trail and state reconstruction capabilities
-- **CQRS Pattern**: Separate read and write operations optimization
-- **Publish-Subscribe**: Kafka-based event streaming for loose coupling
-- **Saga Pattern**: Distributed transaction management across services
+### Arquitetura Orientada a Eventos
+- **Event Sourcing**: Trilhas de auditoria e capacidades de reconstrução de estado
+- **Padrão CQRS**: Otimização separada de operações de leitura e escrita
+- **Publish-Subscribe**: Streaming de eventos via Kafka para baixo acoplamento
+- **Padrão Saga**: Gerenciamento de transações distribuídas entre serviços
 
-### Cloud-Native Patterns
-- **Circuit Breaker**: Resilience against service failures
-- **Bulkhead**: Isolation of resources and failure containment
-- **Health Checks**: Kubernetes liveness and readiness probes
-- **Configuration Management**: Kubernetes ConfigMaps and Secrets
+### Padrões Cloud-Native
+- **Circuit Breaker**: Resiliência contra falhas de serviço
+- **Bulkhead**: Isolamento de recursos e contenção de falhas
+- **Health Checks**: Probes de liveness e readiness do Kubernetes
+- **Gestão de Configuração**: ConfigMaps e Secrets do Kubernetes
 
-## Technology Stack
+## Stack Tecnológico
 
-### Backend Services
-- **Languages**: Python (ML services), Java (core business logic), Node.js (APIs)
+### Serviços de Backend
+- **Linguagens**: Python (serviços de ML), Java (lógica de negócio), Node.js (APIs)
 - **Frameworks**: Spring Boot, Express.js, FastAPI
-- **ML/AI**: TensorFlow, scikit-learn, Apache Spark
-- **Databases**: PostgreSQL, Redis, InfluxDB, Elasticsearch
+- **ML/IA**: TensorFlow, scikit-learn, Apache Spark
+- **Bancos de Dados**: PostgreSQL, Redis, InfluxDB, Elasticsearch
 
-### Frontend Applications
+### Aplicações Frontend
 - **Web**: React.js, TypeScript, Material-UI/Ant Design
 - **Mobile**: React Native, Redux, React Navigation
-- **Real-time**: WebSocket, Server-Sent Events
-- **Maps**: Mapbox GL, Google Maps SDK
+- **Tempo Real**: WebSocket, Server-Sent Events
+- **Mapas**: Mapbox GL, Google Maps SDK
 
-### DevOps & Infrastructure
-- **Containers**: Docker, Kubernetes, Helm charts
-- **CI/CD**: GitLab CI/Jenkins, ArgoCD for GitOps
-- **Cloud Providers**: AWS/Azure/GCP (multi-cloud ready)
-- **Infrastructure as Code**: Terraform, AWS CDK
+### DevOps & Infraestrutura
+- **Contêineres**: Docker, Kubernetes, Helm charts
+- **CI/CD**: GitLab CI/Jenkins, ArgoCD para GitOps
+- **Cloud Providers**: AWS/Azure/GCP (multi-cloud pronto)
+- **Infraestrutura como Código**: Terraform, AWS CDK
 
-## Security Architecture
+## Arquitetura de Segurança
 
-### Authentication & Authorization
-- **Identity Provider**: OAuth 2.0/OpenID Connect (Auth0/Cognito)
-- **API Security**: JWT tokens with short expiration
-- **Role-Based Access**: Fine-grained permissions per service
-- **Multi-Factor Authentication**: TOTP/SMS for privileged accounts
+### Autenticação & Autorização
+- **Provedor de Identidade**: OAuth 2.0/OpenID Connect (Auth0/Cognito)
+- **Segurança de API**: Tokens JWT com expiração curta
+- **Acesso Baseado em Papéis**: Permissões detalhadas por serviço
+- **Autenticação Multifator**: TOTP/SMS para contas privilegiadas
 
-### Data Security
-- **Encryption at Rest**: AES-256 for database and storage
-- **Encryption in Transit**: TLS 1.3 for all communications
-- **Data Masking**: PII protection in non-production environments
-- **Audit Logging**: Comprehensive activity tracking
+### Segurança de Dados
+- **Criptografia em Repouso**: AES-256 para banco de dados e armazenamento
+- **Criptografia em Trânsito**: TLS 1.3 para todas as comunicações
+- **Mascaramento de Dados**: Proteção de PII em ambientes não-produtivos
+- **Log de Auditoria**: Rastreamento abrangente de atividades
 
-### Network Security
-- **Network Isolation**: Private subnets and security groups
-- **Web Application Firewall**: Protection against common attacks
-- **DDoS Protection**: Cloud-native DDoS mitigation
-- **Certificate Management**: Automated SSL/TLS certificate rotation
+### Segurança de Rede
+- **Isolamento de Rede**: Sub-redes privadas e grupos de segurança
+- **Firewall de Aplicação Web**: Proteção contra ataques comuns
+- **Proteção contra DDoS**: Mitigação nativa em cloud contra DDoS
+- **Gestão de Certificados**: Rotação automatizada de certificados SSL/TLS
 
-## Scalability & Performance
+## Escalabilidade & Performance
 
-### Horizontal Scaling
-- **Auto-scaling**: Kubernetes HPA based on CPU/memory/custom metrics
-- **Database Scaling**: Read replicas and connection pooling
-- **Caching Strategy**: Multi-tier caching with Redis and CDN
-- **Load Balancing**: Geographic and application-layer load distribution
+### Escalabilidade Horizontal
+- **Auto-escalonamento**: HPA do Kubernetes baseado em CPU/memória/métricas customizadas
+- **Escalabilidade de Banco de Dados**: Réplicas de leitura e pool de conexões
+- **Estratégia de Cache**: Cache multi-camada com Redis e CDN
+- **Balanceamento de Carga**: Distribuição geográfica e por camada de aplicação
 
-### Performance Optimization
-- **Database Optimization**: Indexing strategy and query optimization
-- **API Optimization**: GraphQL for efficient data fetching
-- **Image Optimization**: CDN with automatic compression
-- **Mobile Optimization**: Offline-first architecture with sync
+### Otimização de Performance
+- **Otimização de Banco de Dados**: Estratégia de indexação e otimização de consultas
+- **Otimização de API**: GraphQL para buscas eficientes de dados
+- **Otimização de Imagens**: CDN com compressão automática
+- **Otimização Mobile**: Arquitetura offline-first com sincronização
 
-## Monitoring & Observability
+## Monitoramento & Observabilidade
 
-### Application Monitoring
-- **Metrics**: Business and technical KPIs via Prometheus
-- **Tracing**: Distributed tracing with Jaeger/Zipkin
-- **Logging**: Centralized structured logging with ELK
-- **Alerting**: PagerDuty integration for critical issues
+### Monitoramento de Aplicações
+- **Métricas**: KPIs de negócio e técnicos via Prometheus
+- **Tracing**: Rastreamento distribuído com Jaeger/Zipkin
+- **Log**: Log centralizado e estruturado com ELK
+- **Alertas**: Integração com PagerDuty para problemas críticos
 
-### Business Intelligence
-- **Analytics**: Real-time dashboards with Grafana
-- **Data Warehouse**: Snowflake/BigQuery for historical analysis
-- **ETL Pipelines**: Apache Airflow for data processing
-- **Machine Learning**: MLflow for model lifecycle management
+### Inteligência de Negócios
+- **Analytics**: Dashboards em tempo real com Grafana
+- **Data Warehouse**: Snowflake/BigQuery para análise histórica
+- **ETL Pipelines**: Apache Airflow para processamento de dados
+- **Machine Learning**: MLflow para gerenciamento do ciclo de vida de modelos
 
-## Disaster Recovery & Business Continuity
+## Recuperação de Desastres & Continuidade de Negócios
 
-### Backup Strategy
-- **Database Backups**: Automated daily backups with point-in-time recovery
-- **Cross-Region Replication**: Multi-region data synchronization
-- **Application Backups**: Container image and configuration versioning
-- **Documentation Backups**: Version-controlled system documentation
+### Estratégia de Backup
+- **Backups de Banco de Dados**: Backups automáticos diários com recuperação ponto-a-ponto
+- **Replicação entre Regiões**: Sincronização de dados entre múltiplas regiões
+- **Backups de Aplicações**: Versionamento de imagens de contêiner e configurações
+- **Backups de Documentação**: Documentação do sistema sob controle de versão
 
-### High Availability
-- **Multi-AZ Deployment**: Distributed across availability zones
-- **Circuit Breaker Pattern**: Graceful degradation during failures
-- **Health Monitoring**: Automatic failover mechanisms
-- **Recovery Time Objective**: RTO < 4 hours, RPO < 1 hour
+### Alta Disponibilidade
+- **Implantação Multi-AZ**: Distribuição entre zonas de disponibilidade
+- **Padrão Circuit Breaker**: Degradação graciosa em falhas
+- **Monitoramento de Saúde**: Mecanismos automáticos de failover
+- **Objetivo de Tempo de Recuperação**: RTO < 4 horas, RPO < 1 hora
 
 ---
 
-**Architecture Governance**
-- **Design Reviews**: Regular architecture review board meetings
-- **Technology Standards**: Approved technology stack and patterns
-- **Security Reviews**: Mandatory security assessments for new services
-- **Performance Baselines**: Defined SLAs and performance targets
+**Governança de Arquitetura**
+- **Revisões de Design**: Reuniões regulares do board de arquitetura
+- **Padrões de Tecnologia**: Stack tecnológico e padrões aprovados
+- **Revisões de Segurança**: Avaliações obrigatórias de segurança para novos serviços
+- **Baselines de Performance**: SLAs e metas de performance definidos
 
-This architecture provides a solid foundation for building a scalable, secure, and maintainable intelligent freight management system that can adapt to changing business requirements and scale with growth.
+Esta arquitetura fornece uma base sólida para construir um sistema de gestão inteligente de fretes escalável, seguro e de fácil manutenção, que pode se adaptar a requisitos de negócio em constante mudança e escalar conforme o crescimento.
