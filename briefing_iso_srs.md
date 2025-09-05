@@ -67,7 +67,7 @@ Principais funcionalidades do sistema incluem:
 - **Gestão de Frotas**: Rastreamento de veículos, agendamento de manutenção e monitoramento de desempenho
 - **Planejamento de Cargas**: Otimização automática de carga e uso do espaço
 - **Análise Preditiva**: Previsão de demanda, manutenção e tempos de entrega
-- **Monitoramento em Tempo Real**: Rastreamento ao vivo de remessas e status da frota
+- **Monitoramento em Tempo Real**: Rastreamento ao vivo do percurso
 - **Gestão de Documentos**: Manipulação digital de documentos de embarque e conformidade
 - **Gestão Financeira**: Cálculo de custos, faturamento e processamento de pagamentos
 - **Relatórios**: Análises abrangentes e inteligência de negócios
@@ -130,22 +130,6 @@ Principais funcionalidades do sistema incluem:
 - **Risco**: Baixo
 - **Verificação**: Teste de precisão do GPS
 
-**REQ-004**: O sistema deve monitorar a saúde do veículo e prever necessidades de manutenção.
-- **Prioridade**: Média
-- **Risco**: Médio
-- **Verificação**: Análise de dados históricos
-
-#### 3.1.3 Módulo de Planejamento de Cargas
-**REQ-005**: O sistema deve otimizar o carregamento da carga para máxima utilização do espaço.
-- **Prioridade**: Alta
-- **Risco**: Médio
-- **Verificação**: Teste de simulação 3D
-
-**REQ-006**: O sistema deve garantir conformidade com regulamentações de peso e segurança.
-- **Prioridade**: Alta
-- **Risco**: Baixo
-- **Verificação**: Teste de conformidade regulatória
-
 #### 3.1.4 Módulo de Interface do Cliente
 **REQ-007**: O sistema deve fornecer rastreamento de remessas em tempo real para clientes.
 - **Prioridade**: Alta
@@ -168,21 +152,6 @@ Principais funcionalidades do sistema incluem:
 **Descrição**: Monitoramento de veículos via GPS com atualizações ao vivo  
 **Estímulo/Resposta**: Movimento do veículo aciona atualização de localização  
 **Requisitos Funcionais Associados**: REQ-003  
-
-### 4.3 Manutenção Preditiva
-**Descrição**: Análise de dados de sensores IoT para previsão de manutenção  
-**Estímulo/Resposta**: Dados de sensores acionam previsão de manutenção  
-**Requisitos Funcionais Associados**: REQ-004  
-
-### 4.4 Otimização de Cargas
-**Descrição**: Planejamento 3D de cargas com restrições de peso e espaço  
-**Estímulo/Resposta**: Pedido de carga aciona algoritmo de otimização  
-**Requisitos Funcionais Associados**: REQ-005, REQ-006  
-
-### 4.5 Portal do Cliente
-**Descrição**: Interfaces web e móvel para rastreamento de remessas  
-**Estímulo/Resposta**: Consulta do cliente aciona recuperação de status  
-**Requisitos Funcionais Associados**: REQ-007, REQ-008  
 
 ## 5. Requisitos de Interface Externa
 
