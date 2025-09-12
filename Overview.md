@@ -2,7 +2,23 @@
 
 ## Visão Geral
 
-O **Frete Inteligente** nasceu para solucionar os desafios enfrentados por pequenas empresas e autônomos que oferecem serviços de frete pessoal, especialmente no transporte universitário e escolar. O aplicativo propõe transformar a comunicação desorganizada, dependente de grupos de WhatsApp e anotações informais, em uma plataforma digital intuitiva, segura e eficiente.
+O **Frete Inteligente** nasceu para solucionar os desafios enfrentados por pequenas empresas e autônomos que oferecem serviços de frete pessoal, especialmente no transporte universitário e escolar.
+
+O problema central está na falta de organização envolvendo a comunicação entre passageiros e prestadores de serviço de frete pessoal. Atualmente, a comunicação se dá por mensagens avulsas em grupos de WhatsApp, listas improvisadas e pagamentos informais, gerando diversos problemas na gestão e operação das pequenas empresas de transporte.
+
+### Exemplo Prático
+
+Uma pequena empresa oferece serviço de frete para alunos universitários com dois veículos, realizando rotas em três horários diferentes. O fluxo típico envolve:
+
+- **Confirmação de presença:** Um dia antes, os alunos avisam se vão ou não para a faculdade no dia seguinte pela manhã.
+- **Desistências:** Ainda há a possibilidade de desistência no próprio dia.
+- **Busca dos alunos:** Às 5h30, a empresa busca os alunos em suas localizações (casa ou ponto de referência).
+- **Chegada:** Até 7h30, todos devem estar em suas universidades (Unifor, Estácio, FB, UNI7, Unichristus Cocó).
+- **Retorno:** Alunos que não vão voltar avisam antecipadamente, o mesmo para quem vai voltar.
+- **Horários de retorno:** 11h00 (veículo 1) e 13h00 (veículo 2) para alunos que saem nesses horários. À noite, há só um horário de retorno e um veículo.
+- **Entrega dos alunos:** Todos são deixados em casa, conforme rota definida pelo motorista.
+
+A comunicação de confirmação e desistência, além do pagamento (via Pix e comprovante no privado), é toda feita de maneira informal e desorganizada.
 
 ---
 
@@ -27,9 +43,9 @@ O **Frete Inteligente** é um aplicativo que automatiza e organiza todos os proc
 - **Check-in de presença com horários definidos**
 - **Otimização de rotas via Machine Learning**
 - **Roteiros fixos e definitivos, minimizando alterações em cima da hora**
-- **Rastreamento em tempo real da rota**
+- **Rastreamento em tempo real da rota, disponível para passageiros e pais/responsáveis**
 - **Gateway de pagamento integrado**
-- **Notificações e alertas sobre viagens, check-ins e aproximação do transporte**
+- **Notificações e alertas sobre viagens, check-ins e proximidade do transporte**
 - **Visualização clara e organizada dos passageiros**
 - **Controle financeiro completo (pagamentos realizados e pendentes)**
 - **Agendamento e gestão de múltiplas viagens**
@@ -37,6 +53,11 @@ O **Frete Inteligente** é um aplicativo que automatiza e organiza todos os proc
 - **Sistema de reputação, avaliações e histórico**
 - **Documentação legal, termos de uso e LGPD**
 - **Layout adaptado para diferentes contextos (empresas, autônomos, passageiros)**
+- **Tabela de controle financeiro para empresas, indicando passageiros pagos e pendentes**
+- **Layout para agendar e visualizar viagens**
+- **Contato com empresas pela plataforma**
+- **Painel administrativo para empresas e autônomos**
+- **Segurança e conformidade LGPD**
 
 ---
 
@@ -84,6 +105,8 @@ O **Frete Inteligente** é um aplicativo que automatiza e organiza todos os proc
 - Contrato de prestação de serviço
 - Consentimento para uso de dados pessoais (LGPD)
 
+Após todas as verificações, o motorista estará apto a prestar serviços na plataforma.
+
 #### Cadastro de Empresa
 
 **Etapa 1: Dados da Empresa**
@@ -128,14 +151,17 @@ O **Frete Inteligente** é um aplicativo que automatiza e organiza todos os proc
 ### Empresas
 
 - **Home/Feed:** Visualização de viagens marcadas, posts (ofertas de viagem), seguidores e notificações
-- **Barra Superior:** Foto de perfil, barra de pesquisa, notificações
-- **Barra Inferior:** Calendário (datas de viagens e feriados), menu, lista de viagens agendadas
+    - Mensagem "Sem viagens marcadas!" para novos usuários sem viagens agendadas
+    - Tema escuro (dark theme), botões e gadgets verdes
+- **Barra Superior:** Foto de perfil, barra de pesquisa (busca por empresas/motoristas), notificações de check-in, presença, seguidores e lembretes de viagem
+- **Barra Inferior:** Calendário (datas de viagens e feriados), menu, lista de viagens agendadas, ícone de viagens (🧳)
 
 #### Perfil da Empresa
 
-- Foto de perfil, seguidores, avaliação dos clientes, número de viagens realizadas
+- Foto de perfil, seguidores/following, avaliação em estrelas, número de viagens realizadas, serviços
 - Posts (ofertas de viagem)
 - Funcionários responsáveis
+- Botão "+" para criar novo post
 
 #### Posts
 
@@ -149,17 +175,20 @@ Posts são ofertas de viagem publicadas pela empresa/motorista. Cada post inclui
 - Contato (via app ou WhatsApp)
 - Preço do serviço
 
-Clientes podem visualizar e se inscrever diretamente nas viagens pelo post.
+Clientes podem visualizar e inscrever-se diretamente nas viagens pelo post. Ao clicar em "Entrar na viagem", o aluno envia uma mensagem automática ao motorista responsável, iniciando o contato.
 
 ---
 
 ### Passageiros/Clientes
 
-- **Viagens:** Lista de viagens marcadas
+- **Viagens:** Lista de viagens marcadas pelo usuário
 - **Calendário:** Datas e horários das viagens
-- **Check-in:** Confirmação de presença em horários específicos
+- **Check-in:** Confirmação de presença em horários específicos, com limite definido pela empresa
 - **Notificações:** Alertas sobre viagens, horários e localização do motorista
-- **Rastreamento:** Localização em tempo real do transporte após o início da rota
+- **Rastreamento:** Localização em tempo real do transporte após início da rota
+- **Pagamento:** Disponibilização de QR code/Pix ou forma escolhida pela empresa, com data estimada de validade do contrato e notificações automáticas
+
+Ao acessar uma viagem, o aluno pode visualizar o calendário de viagens, horários disponíveis, quantidade de passageiros confirmados, fazer check-in, receber notificações e acessar o rastreamento do motorista em tempo real.
 
 ---
 
