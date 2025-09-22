@@ -6,7 +6,7 @@
 
 ## Visão Geral do Projeto
 
-**Frete Inteligente** é um sistema inteligente e abrangente de gestão de fretes e logística, projetado para revolucionar o setor de transporte por meio de tecnologia avançada, aprendizado de máquina e otimização em tempo real.
+**Frete Inteligente** é um sistema inteligente e abrangente de gestão de fretes e logística, projetado para revolucionar o setor de transporte por meio de tecnologia avançada, aprendizado de máquina e automação de processos. O objetivo principal é otimizar rotas, reduzir custos operacionais, melhorar a eficiência e proporcionar transparência em tempo real para todos os envolvidos na cadeia logística.
 
 ### Principais Funcionalidades
 
@@ -16,6 +16,59 @@
 📦 **Planejamento Automatizado de Cargas** - Otimização 3D de carga para máxima eficiência  
 📱 **Acesso Multi-plataforma** - Dashboard web e aplicativos móveis  
 🔗 **Integração com Terceiros** - Conexão transparente com ERP e provedores logísticos  
+
+---
+
+## 🏁 Objetivo do MVP
+
+Entregar uma versão inicial do Frete Inteligente que resolva os maiores gargalos da comunicação e organização entre passageiros, motoristas e empresas, com uma plataforma simples, funcional e validada junto aos primeiros usuários.
+
+### 🚀 Funcionalidades Essenciais do MVP
+
+1. **Cadastro e Login**
+   - Cadastro de usuário (passageiro, motorista autônomo ou empresa).
+   - Campos básicos: nome, CPF, telefone, e-mail, senha.
+   - Upload simples de documentos (somente motorista/empresa).
+   - Login seguro com e-mail + senha.
+
+2. **Gestão de Passageiros (Check-in de presença)**
+   - Passageiro marca no app se vai embarcar ou não em um determinado horário/rota.
+   - Check-in com prazo definido (ex.: até 22h do dia anterior).
+   - Motorista tem acesso à lista final de passageiros confirmados.
+   - Lista exibida em ordem otimizada de embarque.
+
+3. **Pagamentos**
+   - Integração inicial com Pix Copia e Cola (gateway mais simples).
+   - Tela de pagamentos no app: status de pago/não pago.
+   - Histórico básico de pagamentos.
+   - Envio automático de comprovante para o motorista.
+
+4. **Calendário de Viagens**
+   - Motorista/empresa pode criar rotas fixas com horários pré-definidos.
+   - Passageiro consegue visualizar os horários e marcar presença (check-in).
+   - Notificações automáticas lembrando do prazo de confirmação.
+
+5. **Localização em Tempo Real**
+   - Passageiros podem visualizar no mapa a posição do veículo em tempo real.
+   - Motorista compartilha rota automaticamente ao iniciar a viagem.
+   - Simples integração com Google Maps API ou Mapbox.
+
+6. **Otimização de Rotas (versão simplificada)**
+   - Uso de algoritmo inicial de ordenação de paradas (ex.: menor distância entre os pontos).
+   - Motorista visualiza no mapa a rota sugerida pelo sistema.
+   - Possibilidade de reordenar manualmente (caso necessário).
+
+### 📱 Fluxo Básico do MVP
+
+1. Passageiro faz cadastro/login.
+2. Visualiza calendário de rotas disponíveis.
+3. Confirma presença (check-in) até o prazo limite.
+4. Motorista acessa lista de passageiros confirmados, com rota otimizada.
+5. Motorista inicia viagem → rastreamento em tempo real ativado.
+6. Passageiros acompanham no mapa a localização do veículo.
+7. Pagamento feito pelo app → status atualizado automaticamente.
+
+---
 
 ## Estrutura da Documentação
 
@@ -136,4 +189,4 @@ Para dúvidas, problemas ou oportunidades de colaboração:
 
 **"Revolucionando a gestão de fretes através da tecnologia inteligente"**
 
-*Este projeto visa transformar a indústria de logística combinando algoritmos avançados, processamento de dados em tempo real e design centrado no usuário para criar a próxima geração de sistemas de gestão de fretes.*
+*Este projeto visa transformar a indústria de logística combinando algoritmos avançados, processamento de dados em tempo real e design centrado no usuário para criar a próxima geração de sistemas inteligentes de transporte.*
