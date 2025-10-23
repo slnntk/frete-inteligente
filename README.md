@@ -120,39 +120,87 @@ O sistema Frete Inteligente aborda desafios críticos da indústria de fretes e 
 ## Primeiros Passos
 
 ### Pré-requisitos
-- Java/SpringBoot, Node.js 18+ e Python 3.9+
-- Docker e cluster Kubernetes
-- PostgreSQL 14+ e Redis 6+
-- Conta em provedor de nuvem (AWS/Azure/GCP)
+- Node.js 18+
+- PostgreSQL 14+
+- Expo CLI (para o app mobile)
+- npm ou yarn
 
 ### Execução Rápida
+
+#### 1. Clone o repositório
 ```bash
-# Clone o repositório
 git clone https://github.com/slnntk/frete-inteligente.git
-
-# Consulte a especificação de requisitos
-cat briefing_iso_srs.md
-
-# Consulte a arquitetura do sistema  
-cat architecture.md
-
-# Configure o ambiente de desenvolvimento (em breve)
-# npm install && docker-compose up
+cd frete-inteligente
 ```
+
+#### 2. Configure e inicie o Backend
+
+```bash
+cd backend
+
+# Instale as dependências
+npm install
+
+# Configure as variáveis de ambiente
+cp .env.example .env
+# Edite o .env com suas configurações do PostgreSQL
+
+# Crie o banco de dados
+createdb frete_inteligente
+
+# Inicie o servidor
+npm run dev
+```
+
+O backend estará disponível em `http://localhost:3000`
+
+#### 3. Configure e inicie o Transport App
+
+Em outro terminal:
+
+```bash
+cd transport-app
+
+# Instale as dependências
+npm install
+
+# Configure a URL do backend em src/services/api.js
+# Substitua pelo seu IP local (exemplo: http://192.168.1.100:3000/api)
+
+# Inicie o app
+npm start
+```
+
+Escaneie o QR code com o app Expo Go no seu dispositivo móvel.
+
+### 📚 Documentação Detalhada
+
+- **Backend API**: Ver [backend/README.md](./backend/README.md)
+- **Transport App**: Ver [transport-app/README.md](./transport-app/README.md)
+- **Arquitetura**: Ver [architecture.md](./architecture.md)
+- **Requisitos**: Ver [briefing_iso_srs.md](./briefing_iso_srs.md)
 
 ## Status do Projeto
 
-🟡 **Fase Atual**: Análise de Requisitos & Design do Sistema  
+🟢 **Fase Atual**: Desenvolvimento do MVP  
 📅 **Início**: Agosto de 2025  
-👥 **Equipe**: Onboarding da equipe de desenvolvimento  
-📈 **Próximo Marco**: Validação da arquitetura técnica  
+👥 **Equipe**: Desenvolvimento em andamento  
+📈 **Próximo Marco**: Testes e validação do MVP  
 
 ### Roadmap
 
 - [x] Especificação de requisitos (conformidade ISO)
 - [x] Design da arquitetura do sistema
-- [ ] Prova de conceito técnica
-- [ ] Desenvolvimento do MVP
+- [x] Prova de conceito técnica
+- [x] **Desenvolvimento do MVP** ✨ **CONCLUÍDO**
+  - [x] Backend API com Node.js/Express
+  - [x] Banco de dados PostgreSQL
+  - [x] Autenticação JWT
+  - [x] Sistema de check-in
+  - [x] Rastreamento em tempo real (Socket.IO)
+  - [x] Transport App mobile com React Native/Expo
+  - [x] Interface dark theme com Material Design
+  - [x] Integração completa entre frontend e backend
 - [ ] Programa de testes beta
 - [ ] Implantação em produção
 
