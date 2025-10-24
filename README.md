@@ -4,6 +4,18 @@
 [![Versão](https://img.shields.io/badge/Version-1.0-blue.svg)]()
 [![Status](https://img.shields.io/badge/Status-Planning-orange.svg)]()
 
+## 🚀 Como Rodar o Projeto
+
+**[▶️ Guia Completo de Como Rodar o Projeto](./COMO-RODAR.md)**
+
+Um guia passo a passo detalhado de como configurar e executar o projeto, incluindo:
+- Instruções para rodar com Docker (recomendado)
+- Instruções para rodar localmente sem Docker
+- Solução de problemas comuns
+- Scripts úteis para desenvolvimento
+
+---
+
 ## Visão Geral do Projeto
 
 **Frete Inteligente** é um sistema inteligente e abrangente de gestão de fretes e logística, projetado para revolucionar o setor de transporte por meio de tecnologia avançada, aprendizado de máquina e automação de processos. O objetivo principal é otimizar rotas, reduzir custos operacionais, melhorar a eficiência e proporcionar transparência em tempo real para todos os envolvidos na cadeia logística.
@@ -119,26 +131,39 @@ O sistema Frete Inteligente aborda desafios críticos da indústria de fretes e 
 
 ## Primeiros Passos
 
-### Pré-requisitos
-- Java/SpringBoot, Node.js 18+ e Python 3.9+
-- Docker e cluster Kubernetes
-- PostgreSQL 14+ e Redis 6+
-- Conta em provedor de nuvem (AWS/Azure/GCP)
+### 🎯 Início Rápido
 
-### Execução Rápida
+**[📖 Leia o Guia Completo de Como Rodar o Projeto](./COMO-RODAR.md)** - Instruções detalhadas passo a passo!
+
+### Pré-requisitos Mínimos
+- **Java 17+** e **Maven 3.6+** (para o backend)
+- **Node.js 18+** e **npm** (para o frontend)
+- **Docker** e **Docker Compose** (recomendado para o banco de dados)
+- **MySQL 8.0+** (ou use Docker)
+
+### Execução Rápida (com Docker)
 ```bash
 # Clone o repositório
 git clone https://github.com/slnntk/frete-inteligente.git
+cd frete-inteligente
 
-# Consulte a especificação de requisitos
-cat briefing_iso_srs.md
+# Inicie o banco de dados
+docker compose up -d mysql
 
-# Consulte a arquitetura do sistema  
-cat architecture.md
+# Execute o backend (em um terminal)
+mvn spring-boot:run
 
-# Configure o ambiente de desenvolvimento (em breve)
-# npm install && docker-compose up
+# Execute o frontend (em outro terminal)
+cd transport-app
+npm install --legacy-peer-deps
+npm run dev
 ```
+
+Acesse:
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8080
+
+Para mais detalhes, consulte o **[Guia Completo](./COMO-RODAR.md)**!
 
 ## Status do Projeto
 
