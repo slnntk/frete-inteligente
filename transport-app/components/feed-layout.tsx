@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -9,50 +9,55 @@ import { Home, Users, Briefcase, MessageSquare, Bell, Search, Plus } from "lucid
 import Link from "next/link"
 import { PostCard } from "@/components/post-card"
 import { CreatePostModal } from "@/components/create-post-modal"
-
-const mockPosts = [
-  {
-    id: "1",
-    author: {
-      name: "João Silva",
-      role: "Motorista Autônomo",
-      avatar: "/professional-driver.png",
-    },
-    content: "Acabei de completar mais uma viagem com sucesso! Transporte escolar é minha paixão. 🚐",
-    timestamp: "2h atrás",
-    likes: 24,
-    comments: 5,
-  },
-  {
-    id: "2",
-    author: {
-      name: "TransLog Transportes",
-      role: "Empresa de Transporte",
-      avatar: "/transport-company-logo.png",
-    },
-    content:
-      "Estamos contratando! Procuramos motoristas experientes para rotas escolares. Interessados, entrem em contato.",
-    timestamp: "5h atrás",
-    likes: 42,
-    comments: 12,
-  },
-  {
-    id: "3",
-    author: {
-      name: "Maria Santos",
-      role: "Coordenadora Escolar",
-      avatar: "/school-coordinator.jpg",
-    },
-    content:
-      "Dica para pais: sempre verifiquem as credenciais e avaliações dos motoristas antes de contratar o serviço de transporte escolar.",
-    timestamp: "1d atrás",
-    likes: 67,
-    comments: 18,
-  },
-]
+import { api, type Postagem, type Usuario } from "@/lib/api"
 
 export function FeedLayout() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
+  const [posts, setPosts] = useState<Postagem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [currentUser, setCurrentUser] = useState<Usuario | null>(null)
+
+  const loadPosts = async () => {
+    try {
+      const postagens = await api.getPostagens()
+      setPosts(postagens)
+    } catch (error) {
+      console.error("Erro ao carregar postagens:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    // Load current user from localStorage
+    const userStr = localStorage.getItem("user")
+    if (userStr) {
+      setCurrentUser(JSON.parse(userStr))
+    }
+    
+    // Load posts
+    loadPosts()
+  }, [])
+
+  const handlePostCreated = () => {
+    // Reload posts after a new post is created
+    loadPosts()
+  }
+
+  // Transform backend posts to feed format
+  const transformedPosts = posts.map((post) => ({
+    id: post.id?.toString() || "",
+    author: {
+      name: post.autor?.nome || "Usuário",
+      role: post.autor?.tipo === "EMPRESA" ? "Empresa de Transporte" : 
+            post.autor?.tipo === "AUTONOMO" ? "Motorista Autônomo" : "Cliente",
+      avatar: "/placeholder.svg",
+    },
+    content: `${post.titulo}\n\nRegião: ${post.regiao}\n${post.descricao}\n\nPreço: R$ ${post.preco?.toFixed(2)}`,
+    timestamp: "Recente",
+    likes: 0,
+    comments: 0,
+  }))
 
   return (
     <div className="min-h-screen bg-background">
@@ -104,10 +109,15 @@ export function FeedLayout() {
               <CardHeader className="text-center pb-0">
                 <Avatar className="h-20 w-20 mx-auto mb-3">
                   <AvatarImage src="/user-profile-illustration.png" />
-                  <AvatarFallback className="bg-primary text-primary-foreground text-2xl">U</AvatarFallback>
+                  <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
+                    {currentUser?.nome?.charAt(0) || "U"}
+                  </AvatarFallback>
                 </Avatar>
-                <h3 className="font-semibold text-foreground">Seu Nome</h3>
-                <p className="text-sm text-muted-foreground">Seu cargo/função</p>
+                <h3 className="font-semibold text-foreground">{currentUser?.nome || "Usuário"}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {currentUser?.tipo === "EMPRESA" ? "Empresa de Transporte" :
+                   currentUser?.tipo === "AUTONOMO" ? "Motorista Autônomo" : "Cliente"}
+                </p>
               </CardHeader>
               <CardContent className="pt-4">
                 <div className="space-y-2 text-sm">
@@ -153,9 +163,23 @@ export function FeedLayout() {
             </Card>
 
             {/* Posts */}
-            {mockPosts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
+            {loading ? (
+              <Card className="bg-card border-border">
+                <CardContent className="p-6">
+                  <p className="text-center text-muted-foreground">Carregando postagens...</p>
+                </CardContent>
+              </Card>
+            ) : transformedPosts.length === 0 ? (
+              <Card className="bg-card border-border">
+                <CardContent className="p-6">
+                  <p className="text-center text-muted-foreground">
+                    Nenhuma postagem ainda. Seja o primeiro a criar uma!
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              transformedPosts.map((post) => <PostCard key={post.id} post={post} />)
+            )}
           </div>
 
           {/* Right Sidebar */}
@@ -187,7 +211,11 @@ export function FeedLayout() {
       </main>
 
       {/* Create Post Modal */}
-      <CreatePostModal open={isCreatePostOpen} onOpenChange={setIsCreatePostOpen} />
+      <CreatePostModal 
+        open={isCreatePostOpen} 
+        onOpenChange={setIsCreatePostOpen}
+        onPostCreated={handlePostCreated}
+      />
     </div>
   )
 }
