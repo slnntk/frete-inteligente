@@ -67,5 +67,10 @@ export const viagemService = {
   buscarPorPostagem: async (postagemId: number): Promise<Viagem[]> => {
     return apiClient.get<Viagem[]>(`/viagens/postagem/${postagemId}`);
   },
+
+  // Participantes (apenas para gestão)
+  listarParticipantes: async (viagemId: number): Promise<Array<{ id: number; nome: string; email: string; telefone: string; checkedIn: boolean }>> => {
+    return apiClient.get(`/viagens/${viagemId}/participantes`);
+  },
 };
 

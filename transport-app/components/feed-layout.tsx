@@ -16,6 +16,7 @@ import { viagemService } from "@/services/viagem.service"
 import { inscricaoService } from "@/services/inscricao.service"
 import { useToast } from "@/hooks/use-toast"
 import type { Postagem } from "@/types"
+import { usePathname } from "next/navigation"
 
 export function FeedLayout() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
@@ -239,6 +240,24 @@ export function FeedLayout() {
                           onClick={() => { setEditingPost(postagem); setIsEditPostOpen(true) }}
                         >
                           Editar
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={async () => {
+                            try {
+                              const viagens = await viagemService.buscarPorPostagem(postagem.id!)
+                              if (!viagens.length) {
+                                toast({ title: "Nenhuma viagem desta postagem", variant: "destructive" })
+                                return
+                              }
+                              const id = viagens[0].id!
+                              router.push(`/viagens/${id}`)
+                            } catch (e) {
+                              toast({ title: "Erro ao abrir gestão da viagem", variant: "destructive" })
+                            }
+                          }}
+                        >
+                          Gerenciar viagem
                         </Button>
                         <Button
                           variant="outline"

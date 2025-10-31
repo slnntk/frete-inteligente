@@ -3,6 +3,11 @@ package frete_inteligente.com.frete_inteligente.controller;
 import frete_inteligente.com.frete_inteligente.domain.trip.Viagem;
 import frete_inteligente.com.frete_inteligente.domain.trip.ViagemStatus;
 import frete_inteligente.com.frete_inteligente.repository.ViagemRepository;
+import frete_inteligente.com.frete_inteligente.repository.InscricaoRepository;
+import frete_inteligente.com.frete_inteligente.repository.CheckinRepository;
+import frete_inteligente.com.frete_inteligente.domain.trip.Inscricao;
+import frete_inteligente.com.frete_inteligente.domain.trip.Checkin;
+import frete_inteligente.com.frete_inteligente.domain.user.Usuario;
 import frete_inteligente.com.frete_inteligente.repository.PostagemRepository;
 import frete_inteligente.com.frete_inteligente.repository.VeiculoRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +25,8 @@ public class ViagemController {
     private final ViagemRepository viagemRepository;
     private final PostagemRepository postagemRepository;
     private final VeiculoRepository veiculoRepository;
+    private final InscricaoRepository inscricaoRepository;
+    private final CheckinRepository checkinRepository;
 
     @GetMapping
     public List<Viagem> listarViagens() {
@@ -79,4 +86,21 @@ public class ViagemController {
                 .filter(v -> v.getPostagem().getId().equals(postagemId))
                 .toList();
     }
+
+    // Lista participantes (inscritos) de uma viagem com status de check-in
+    @GetMapping("/{viagemId}/participantes")
+    public List<ParticipanteDTO> listarParticipantes(@PathVariable Long viagemId) {
+        return inscricaoRepository.findAll().stream()
+                .filter(i -> i.getViagem().getId().equals(viagemId))
+                .map(i -> {
+                    Usuario u = i.getCliente();
+                    boolean checkin = checkinRepository.findAll().stream()
+                            .anyMatch(c -> c.getViagem().getId().equals(viagemId)
+                                    && c.getCliente().getId().equals(u.getId()));
+                    return new ParticipanteDTO(u.getId(), u.getNome(), u.getEmail(), u.getTelefone(), checkin);
+                })
+                .toList();
+    }
+
+    public record ParticipanteDTO(Long id, String nome, String email, String telefone, boolean checkedIn) {}
 }
