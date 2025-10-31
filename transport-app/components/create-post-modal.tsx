@@ -15,18 +15,37 @@ interface CreatePostModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onPostCreated?: () => void
+  mode?: 'create' | 'edit'
+  postagem?: {
+    id: number
+    titulo: string
+    regiao: string
+    descricao: string
+    preco: number
+  }
 }
 
-export function CreatePostModal({ open, onOpenChange, onPostCreated }: CreatePostModalProps) {
+export function CreatePostModal({ open, onOpenChange, onPostCreated, mode = 'create', postagem }: CreatePostModalProps) {
   const { usuario } = useAuth()
   const { toast } = useToast()
   const [formData, setFormData] = useState({
-    titulo: "",
-    regiao: "",
-    descricao: "",
-    preco: "",
+    titulo: postagem?.titulo || "",
+    regiao: postagem?.regiao || "",
+    descricao: postagem?.descricao || "",
+    preco: postagem ? String(postagem.preco) : "",
   })
   const [isLoading, setIsLoading] = useState(false)
+
+  // Atualiza o formulário quando abrir em modo edição
+  // útil caso o modal reabra com outro item
+  // e evitar manter estado anterior
+  if (mode === 'edit' && postagem && formData.titulo === "" && open) {
+    // inicialização lazy sem useEffect para evitar SSR/hydration warnings
+    formData.titulo = postagem.titulo
+    formData.regiao = postagem.regiao
+    formData.descricao = postagem.descricao
+    formData.preco = String(postagem.preco)
+  }
 
   const handlePost = async () => {
     if (!usuario?.id) {
@@ -59,28 +78,32 @@ export function CreatePostModal({ open, onOpenChange, onPostCreated }: CreatePos
 
     setIsLoading(true)
     try {
-      await postagemService.criar({
-        autorId: usuario.id,
-        titulo: formData.titulo,
-        regiao: formData.regiao,
-        descricao: formData.descricao,
-        preco: parseFloat(formData.preco),
-      })
-
-      toast({
-        title: "Sucesso!",
-        description: "Postagem criada com sucesso",
-      })
+      if (mode === 'edit' && postagem?.id) {
+        await postagemService.atualizar(postagem.id, {
+          titulo: formData.titulo,
+          regiao: formData.regiao,
+          descricao: formData.descricao,
+          preco: parseFloat(formData.preco),
+          autorId: usuario.id,
+        })
+        toast({ title: "Postagem atualizada!" })
+      } else {
+        await postagemService.criar({
+          autorId: usuario.id,
+          titulo: formData.titulo,
+          regiao: formData.regiao,
+          descricao: formData.descricao,
+          preco: parseFloat(formData.preco),
+        })
+        toast({ title: "Sucesso!", description: "Postagem criada com sucesso" })
+      }
 
       setFormData({ titulo: "", regiao: "", descricao: "", preco: "" })
       onOpenChange(false)
-      
-      if (onPostCreated) {
-        onPostCreated()
-      }
+      if (onPostCreated) onPostCreated()
     } catch (error) {
       toast({
-        title: "Erro ao criar postagem",
+        title: mode === 'edit' ? "Erro ao atualizar postagem" : "Erro ao criar postagem",
         description: error instanceof Error ? error.message : "Tente novamente",
         variant: "destructive",
       })
@@ -93,7 +116,7 @@ export function CreatePostModal({ open, onOpenChange, onPostCreated }: CreatePos
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-card border-border max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="text-foreground">Criar publicação</DialogTitle>
+          <DialogTitle className="text-foreground">{mode === 'edit' ? 'Editar publicação' : 'Criar publicação'}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -169,7 +192,7 @@ export function CreatePostModal({ open, onOpenChange, onPostCreated }: CreatePos
             disabled={isLoading || !formData.titulo || !formData.regiao || !formData.descricao || !formData.preco}
             className="w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
-            {isLoading ? "Publicando..." : "Publicar Oferta"}
+            {isLoading ? (mode === 'edit' ? 'Salvando...' : 'Publicando...') : (mode === 'edit' ? 'Salvar alterações' : 'Publicar Oferta')}
           </Button>
         </div>
       </DialogContent>

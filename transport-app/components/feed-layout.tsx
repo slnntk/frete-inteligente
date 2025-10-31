@@ -19,8 +19,10 @@ import type { Postagem } from "@/types"
 
 export function FeedLayout() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
+  const [isEditPostOpen, setIsEditPostOpen] = useState(false)
   const [postagens, setPostagens] = useState<Postagem[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [editingPost, setEditingPost] = useState<Postagem | null>(null)
   const { usuario, logout } = useAuth()
   const { toast } = useToast()
   const router = useRouter()
@@ -229,6 +231,33 @@ export function FeedLayout() {
                     <p className="text-foreground">{postagem.descricao}</p>
                     <p className="text-lg font-bold text-primary">R$ {postagem.preco.toFixed(2)}</p>
 
+                    {/* Ações do autor da postagem */}
+                    {(usuario?.id && typeof postagem.autor === 'object' && 'id' in postagem.autor && postagem.autor.id === usuario.id) && (
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => { setEditingPost(postagem); setIsEditPostOpen(true) }}
+                        >
+                          Editar
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className="text-red-600"
+                          onClick={async () => {
+                            try {
+                              await postagemService.deletar(postagem.id!)
+                              toast({ title: "Postagem excluída" })
+                              carregarPostagens()
+                            } catch (e) {
+                              toast({ title: "Erro ao excluir postagem", variant: "destructive" })
+                            }
+                          }}
+                        >
+                          Excluir
+                        </Button>
+                      </div>
+                    )}
+
                     {/* Botão Entrar visível apenas para CLIENTE */}
                     {usuario?.tipo === "CLIENTE" && (
                       <Button
@@ -296,6 +325,21 @@ export function FeedLayout() {
         onOpenChange={setIsCreatePostOpen}
         onPostCreated={carregarPostagens}
       />
+      {editingPost && (
+        <CreatePostModal
+          open={isEditPostOpen}
+          onOpenChange={(o) => { setIsEditPostOpen(o); if (!o) setEditingPost(null) }}
+          onPostCreated={carregarPostagens}
+          mode="edit"
+          postagem={{
+            id: editingPost.id!,
+            titulo: editingPost.titulo,
+            regiao: editingPost.regiao,
+            descricao: editingPost.descricao,
+            preco: editingPost.preco,
+          }}
+        />
+      )}
     </div>
   )
 }

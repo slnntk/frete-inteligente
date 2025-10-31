@@ -35,7 +35,7 @@ public class Viagem {
     private String destino;
 
     // Lista de destinos alternativos/opcionais
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "viagem_destinos", joinColumns = @JoinColumn(name = "viagem_id"))
     @Column(name = "destino")
     private List<String> destinos;
