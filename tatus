@@ -1,0 +1,46 @@
+[1mdiff --git a/src/main/java/frete_inteligente/com/frete_inteligente/controller/PostagemController.java b/src/main/java/frete_inteligente/com/frete_inteligente/controller/PostagemController.java[m
+[1mindex 921c7ef..494cd92 100644[m
+[1m--- a/src/main/java/frete_inteligente/com/frete_inteligente/controller/PostagemController.java[m
+[1m+++ b/src/main/java/frete_inteligente/com/frete_inteligente/controller/PostagemController.java[m
+[36m@@ -2,9 +2,12 @@[m [mpackage frete_inteligente.com.frete_inteligente.controller;[m
+ [m
+ import frete_inteligente.com.frete_inteligente.domain.post.Postagem;[m
+ import frete_inteligente.com.frete_inteligente.repository.PostagemRepository;[m
+[32m+[m[32m<<<<<<< HEAD[m
+ import frete_inteligente.com.frete_inteligente.repository.ViagemRepository;[m
+ import frete_inteligente.com.frete_inteligente.domain.trip.Viagem;[m
+ import frete_inteligente.com.frete_inteligente.domain.trip.ViagemStatus;[m
+[32m+[m[32m=======[m
+[32m+[m[32m>>>>>>> 38f6f279c5beaa8279a5dc01b8de0292521c2ba3[m
+ import frete_inteligente.com.frete_inteligente.repository.UsuarioRepository;[m
+ import lombok.RequiredArgsConstructor;[m
+ import org.springframework.http.ResponseEntity;[m
+[36m@@ -20,7 +23,10 @@[m [mpublic class PostagemController {[m
+ [m
+     private final PostagemRepository postagemRepository;[m
+     private final UsuarioRepository usuarioRepository;[m
+[32m+[m[32m<<<<<<< HEAD[m
+     private final ViagemRepository viagemRepository;[m
+[32m+[m[32m=======[m
+[32m+[m[32m>>>>>>> 38f6f279c5beaa8279a5dc01b8de0292521c2ba3[m
+ [m
+     @GetMapping[m
+     public List<Postagem> listarPostagens() {[m
+[36m@@ -40,6 +46,7 @@[m [mpublic class PostagemController {[m
+         if (!usuarioRepository.existsById(postagem.getAutor().getId())) {[m
+             return ResponseEntity.badRequest().build();[m
+         }[m
+[32m+[m[32m<<<<<<< HEAD[m
+         Postagem salva = postagemRepository.save(postagem);[m
+ [m
+         // Criar viagem padrão automaticamente vinculada à postagem[m
+[36m@@ -53,6 +60,9 @@[m [mpublic class PostagemController {[m
+         viagemRepository.save(viagem);[m
+ [m
+         return ResponseEntity.ok(salva);[m
+[32m+[m[32m=======[m
+[32m+[m[32m        return ResponseEntity.ok(postagemRepository.save(postagem));[m
+[32m+[m[32m>>>>>>> 38f6f279c5beaa8279a5dc01b8de0292521c2ba3[m
+     }[m
+ [m
+     @PutMapping("/{id}")[m
