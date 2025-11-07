@@ -28,6 +28,13 @@ public class Checkin {
 
     @Column(name = "realizado_em")
     private OffsetDateTime realizadoEm;
+
+    // Localização do check-in
+    @Column(precision = 10)
+    private Double latitude;
+
+    @Column(precision = 11)
+    private Double longitude;
 }
 
 

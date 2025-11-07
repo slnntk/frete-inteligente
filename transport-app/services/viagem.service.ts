@@ -18,6 +18,10 @@ export const viagemService = {
       postagem: { id: data.postagemId },
       horarioPartida: data.horarioPartida,
       ...(data.destino && { destino: data.destino }),
+      ...(data.cepPartida && { cepPartida: data.cepPartida }),
+      ...(data.enderecoPartida && { enderecoPartida: data.enderecoPartida }),
+      ...(data.latitudePartida && { latitudePartida: data.latitudePartida }),
+      ...(data.longitudePartida && { longitudePartida: data.longitudePartida }),
       capacidade: data.capacidade,
       status: data.status,
     };
@@ -38,16 +42,31 @@ export const viagemService = {
 
   // Atualizar viagem
   atualizar: async (id: number, data: Partial<CreateViagemRequest>): Promise<Viagem> => {
-    const payload: Partial<Viagem> = {
-      ...(data.horarioPartida && { horarioPartida: data.horarioPartida }),
-      ...(data.destino && { destino: data.destino }),
-      ...(data.capacidade !== undefined && { capacidade: data.capacidade }),
-      ...(data.status && { status: data.status }),
-      ...(data.postagemId && { postagem: { id: data.postagemId } }),
+    // Se apenas o status está sendo atualizado, usar o endpoint específico
+    if (data.status && Object.keys(data).length === 1) {
+      return apiClient.put<Viagem>(`/viagens/${id}/status`, data.status);
+    }
+    
+    // Buscar viagem atual primeiro para preservar campos não fornecidos
+    const viagemAtual = await apiClient.get<Viagem>(`/viagens/${id}`)
+    
+    // Construir payload no formato esperado pelo backend (ViagemRequestDTO)
+    const payload: any = {
+      postagemId: viagemAtual.postagem.id, // Usar postagemId ao invés de objeto aninhado
+      horarioPartida: data.horarioPartida || viagemAtual.horarioPartida,
+      destino: data.destino !== undefined ? data.destino : viagemAtual.destino,
+      cepPartida: data.cepPartida || viagemAtual.cepPartida,
+      enderecoPartida: data.enderecoPartida || viagemAtual.enderecoPartida,
+      latitudePartida: data.latitudePartida !== undefined ? data.latitudePartida : viagemAtual.latitudePartida,
+      longitudePartida: data.longitudePartida !== undefined ? data.longitudePartida : viagemAtual.longitudePartida,
+      capacidade: data.capacidade !== undefined ? data.capacidade : viagemAtual.capacidade,
+      status: data.status || viagemAtual.status,
     };
 
     if (data.veiculoId) {
-      payload.veiculo = { id: data.veiculoId };
+      payload.veiculoId = data.veiculoId;
+    } else if (viagemAtual.veiculo) {
+      payload.veiculoId = viagemAtual.veiculo.id;
     }
 
     return apiClient.put<Viagem>(`/viagens/${id}`, payload);
@@ -69,7 +88,7 @@ export const viagemService = {
   },
 
   // Participantes (apenas para gestão)
-  listarParticipantes: async (viagemId: number): Promise<Array<{ id: number; nome: string; email: string; telefone: string; checkedIn: boolean; endereco?: string; latitude?: number; longitude?: number }>> => {
+  listarParticipantes: async (viagemId: number): Promise<Array<{ id: number; nome: string; email: string; telefone: string; checkedIn: boolean; coletado: boolean; endereco?: string; latitude?: number; longitude?: number }>> => {
     return apiClient.get(`/viagens/${viagemId}/participantes`);
   },
 };

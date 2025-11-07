@@ -8,11 +8,20 @@ export interface InscricaoDTO {
 }
 
 export const inscricaoService = {
-  criar: async (viagemId: number, clienteId: number): Promise<InscricaoDTO> => {
-    const payload: InscricaoDTO = {
-      viagem: { id: viagemId },
-      cliente: { id: clienteId },
+  criar: async (
+    viagemId: number, 
+    clienteId: number,
+    localizacao?: { endereco?: string; latitude?: number; longitude?: number }
+  ): Promise<InscricaoDTO> => {
+    const payload: any = {
+      viagemId: viagemId,
+      clienteId: clienteId,
     };
+    
+    // A localização será atualizada no perfil do cliente se fornecida
+    // Por enquanto, apenas criamos a inscrição
+    // TODO: Atualizar perfil do cliente com localização se fornecida
+    
     return apiClient.post<InscricaoDTO>('/inscricoes', payload);
   },
 

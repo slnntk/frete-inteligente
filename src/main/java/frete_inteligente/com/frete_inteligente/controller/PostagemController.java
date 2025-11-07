@@ -1,82 +1,60 @@
 package frete_inteligente.com.frete_inteligente.controller;
 
 import frete_inteligente.com.frete_inteligente.domain.post.Postagem;
-import frete_inteligente.com.frete_inteligente.repository.PostagemRepository;
-import frete_inteligente.com.frete_inteligente.repository.ViagemRepository;
-import frete_inteligente.com.frete_inteligente.domain.trip.Viagem;
-import frete_inteligente.com.frete_inteligente.domain.trip.ViagemStatus;
-import frete_inteligente.com.frete_inteligente.repository.UsuarioRepository;
+import frete_inteligente.com.frete_inteligente.dto.PostagemRequestDTO;
+import frete_inteligente.com.frete_inteligente.exception.EntityNotFoundException;
+import frete_inteligente.com.frete_inteligente.service.PostagemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/postagens")
 @RequiredArgsConstructor
 public class PostagemController {
 
-    private final PostagemRepository postagemRepository;
-    private final UsuarioRepository usuarioRepository;
-    private final ViagemRepository viagemRepository;
+    private final PostagemService postagemService;
 
     @GetMapping
     public List<Postagem> listarPostagens() {
-        return postagemRepository.findAll();
+        return postagemService.listarTodas();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Postagem> buscarPostagem(@PathVariable Long id) {
-        Optional<Postagem> postagem = postagemRepository.findById(id);
-        return postagem.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return postagemService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Postagem não encontrada"));
     }
 
     @PostMapping
-    public ResponseEntity<Postagem> criarPostagem(@RequestBody Postagem postagem) {
-        // Verificar se o autor existe
-        if (!usuarioRepository.existsById(postagem.getAutor().getId())) {
-            return ResponseEntity.badRequest().build();
-        }
-        Postagem salva = postagemRepository.save(postagem);
-
-        // Criar viagem padrão automaticamente vinculada à postagem
-        Viagem viagem = Viagem.builder()
-                .postagem(salva)
-                .horarioPartida(java.time.LocalTime.of(5, 30))
-                .destino(salva.getRegiao() != null ? salva.getRegiao() : "A definir")
-                .capacidade(20)
-                .status(ViagemStatus.ABERTA)
-                .build();
-        viagemRepository.save(viagem);
-
-        return ResponseEntity.ok(salva);
+    public ResponseEntity<Postagem> criarPostagem(@Valid @RequestBody PostagemRequestDTO dto) {
+        Postagem postagem = postagemService.criar(dto);
+        return ResponseEntity.ok(postagem);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Postagem> atualizarPostagem(@PathVariable Long id, @RequestBody Postagem postagemAtualizada) {
-        if (!postagemRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        postagemAtualizada.setId(id);
-        return ResponseEntity.ok(postagemRepository.save(postagemAtualizada));
+    public ResponseEntity<Postagem> atualizarPostagem(
+            @PathVariable Long id,
+            @Valid @RequestBody PostagemRequestDTO dto) {
+        return postagemService.atualizar(id, dto)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Postagem não encontrada"));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarPostagem(@PathVariable Long id) {
-        if (!postagemRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+        if (postagemService.deletar(id)) {
+            return ResponseEntity.noContent().build();
         }
-        postagemRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+        throw new EntityNotFoundException("Postagem não encontrada");
     }
 
     @GetMapping("/autor/{autorId}")
     public List<Postagem> buscarPorAutor(@PathVariable Long autorId) {
-        return postagemRepository.findAll().stream()
-                .filter(p -> p.getAutor().getId().equals(autorId))
-                .toList();
+        return postagemService.buscarPorAutor(autorId);
     }
 }

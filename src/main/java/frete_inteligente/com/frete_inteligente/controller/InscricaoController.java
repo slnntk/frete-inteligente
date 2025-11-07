@@ -1,71 +1,57 @@
 package frete_inteligente.com.frete_inteligente.controller;
 
 import frete_inteligente.com.frete_inteligente.domain.trip.Inscricao;
-import frete_inteligente.com.frete_inteligente.repository.InscricaoRepository;
-import frete_inteligente.com.frete_inteligente.repository.UsuarioRepository;
-import frete_inteligente.com.frete_inteligente.repository.ViagemRepository;
+import frete_inteligente.com.frete_inteligente.dto.InscricaoRequestDTO;
+import frete_inteligente.com.frete_inteligente.exception.EntityNotFoundException;
+import frete_inteligente.com.frete_inteligente.service.InscricaoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/inscricoes")
 @RequiredArgsConstructor
 public class InscricaoController {
 
-    private final InscricaoRepository inscricaoRepository;
-    private final ViagemRepository viagemRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final InscricaoService inscricaoService;
 
     @GetMapping
     public List<Inscricao> listar() {
-        return inscricaoRepository.findAll();
+        return inscricaoService.listarTodas();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Inscricao> buscarPorId(@PathVariable Long id) {
-        Optional<Inscricao> inscricao = inscricaoRepository.findById(id);
-        return inscricao.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return inscricaoService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Inscrição não encontrada"));
     }
 
     @PostMapping
-    public ResponseEntity<Inscricao> criar(@RequestBody Inscricao inscricao) {
-        if (inscricao.getViagem() == null || inscricao.getViagem().getId() == null ||
-                !viagemRepository.existsById(inscricao.getViagem().getId())) {
-            return ResponseEntity.badRequest().build();
-        }
-        if (inscricao.getCliente() == null || inscricao.getCliente().getId() == null ||
-                !usuarioRepository.existsById(inscricao.getCliente().getId())) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(inscricaoRepository.save(inscricao));
+    public ResponseEntity<Inscricao> criar(@Valid @RequestBody InscricaoRequestDTO dto) {
+        Inscricao inscricao = inscricaoService.criar(dto);
+        return ResponseEntity.ok(inscricao);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        if (!inscricaoRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+        if (inscricaoService.deletar(id)) {
+            return ResponseEntity.noContent().build();
         }
-        inscricaoRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+        throw new EntityNotFoundException("Inscrição não encontrada");
     }
 
     @GetMapping("/cliente/{clienteId}")
     public List<Inscricao> listarPorCliente(@PathVariable Long clienteId) {
-        return inscricaoRepository.findAll().stream()
-                .filter(i -> i.getCliente() != null && i.getCliente().getId().equals(clienteId))
-                .collect(Collectors.toList());
+        return inscricaoService.buscarPorCliente(clienteId);
     }
 
     @GetMapping("/viagem/{viagemId}")
     public List<Inscricao> listarPorViagem(@PathVariable Long viagemId) {
-        return inscricaoRepository.findAll().stream()
-                .filter(i -> i.getViagem() != null && i.getViagem().getId().equals(viagemId))
-                .collect(Collectors.toList());
+        return inscricaoService.buscarPorViagem(viagemId);
     }
 }
 

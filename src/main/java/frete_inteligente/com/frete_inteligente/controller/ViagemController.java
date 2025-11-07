@@ -2,121 +2,92 @@ package frete_inteligente.com.frete_inteligente.controller;
 
 import frete_inteligente.com.frete_inteligente.domain.trip.Viagem;
 import frete_inteligente.com.frete_inteligente.domain.trip.ViagemStatus;
-import frete_inteligente.com.frete_inteligente.repository.ViagemRepository;
-import frete_inteligente.com.frete_inteligente.repository.InscricaoRepository;
-import frete_inteligente.com.frete_inteligente.repository.CheckinRepository;
-import frete_inteligente.com.frete_inteligente.domain.user.Usuario;
-import frete_inteligente.com.frete_inteligente.repository.PostagemRepository;
-import frete_inteligente.com.frete_inteligente.repository.VeiculoRepository;
+import frete_inteligente.com.frete_inteligente.dto.LocalizacaoMotoristaDTO;
+import frete_inteligente.com.frete_inteligente.dto.ParticipanteDTO;
+import frete_inteligente.com.frete_inteligente.dto.ViagemRequestDTO;
+import frete_inteligente.com.frete_inteligente.exception.EntityNotFoundException;
+import frete_inteligente.com.frete_inteligente.service.ViagemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/viagens")
 @RequiredArgsConstructor
 public class ViagemController {
 
-    private final ViagemRepository viagemRepository;
-    private final PostagemRepository postagemRepository;
-    private final VeiculoRepository veiculoRepository;
-    private final InscricaoRepository inscricaoRepository;
-    private final CheckinRepository checkinRepository;
+    private final ViagemService viagemService;
 
     @GetMapping
     public List<Viagem> listarViagens() {
-        return viagemRepository.findAll();
+        return viagemService.listarTodas();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Viagem> buscarViagem(@PathVariable Long id) {
-        Optional<Viagem> viagem = viagemRepository.findById(id);
-        return viagem.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return viagemService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Viagem não encontrada"));
     }
 
     @PostMapping
-    public ResponseEntity<Viagem> criarViagem(@RequestBody Viagem viagem) {
-        // Verificar se a postagem existe
-        if (!postagemRepository.existsById(viagem.getPostagem().getId())) {
-            return ResponseEntity.badRequest().build();
-        }
-        
-        // Verificar se o veículo existe (se fornecido)
-        if (viagem.getVeiculo() != null && !veiculoRepository.existsById(viagem.getVeiculo().getId())) {
-            return ResponseEntity.badRequest().build();
-        }
-        
-        return ResponseEntity.ok(viagemRepository.save(viagem));
+    public ResponseEntity<Viagem> criarViagem(@Valid @RequestBody ViagemRequestDTO dto) {
+        Viagem viagem = viagemService.criar(dto);
+        return ResponseEntity.ok(viagem);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Viagem> atualizarViagem(@PathVariable Long id, @RequestBody Viagem viagemAtualizada) {
-        if (!viagemRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        viagemAtualizada.setId(id);
-        return ResponseEntity.ok(viagemRepository.save(viagemAtualizada));
+    public ResponseEntity<Viagem> atualizarViagem(
+            @PathVariable Long id,
+            @RequestBody ViagemRequestDTO dto) {
+        return viagemService.atualizar(id, dto)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Viagem não encontrada"));
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Viagem> atualizarStatus(
+            @PathVariable Long id,
+            @RequestBody ViagemStatus status) {
+        return viagemService.atualizarStatus(id, status)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Viagem não encontrada"));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarViagem(@PathVariable Long id) {
-        if (!viagemRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+        if (viagemService.deletar(id)) {
+            return ResponseEntity.noContent().build();
         }
-        viagemRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+        throw new EntityNotFoundException("Viagem não encontrada");
     }
 
     @GetMapping("/status/{status}")
     public List<Viagem> buscarPorStatus(@PathVariable ViagemStatus status) {
-        return viagemRepository.findAll().stream()
-                .filter(v -> v.getStatus() == status)
-                .toList();
+        return viagemService.buscarPorStatus(status);
     }
 
     @GetMapping("/postagem/{postagemId}")
     public List<Viagem> buscarPorPostagem(@PathVariable Long postagemId) {
-        return viagemRepository.findAll().stream()
-                .filter(v -> v.getPostagem().getId().equals(postagemId))
-                .toList();
+        return viagemService.buscarPorPostagem(postagemId);
     }
 
-    // Lista participantes (inscritos) de uma viagem com status de check-in
+    // Lista participantes (inscritos) de uma viagem com status de check-in e coleta
     @GetMapping("/{viagemId}/participantes")
     public List<ParticipanteDTO> listarParticipantes(@PathVariable Long viagemId) {
-        return inscricaoRepository.findAll().stream()
-                .filter(i -> i.getViagem().getId().equals(viagemId))
-                .map(i -> {
-                    Usuario u = i.getCliente();
-                    boolean checkin = checkinRepository.findAll().stream()
-                            .anyMatch(c -> c.getViagem().getId().equals(viagemId)
-                                    && c.getCliente().getId().equals(u.getId()));
-                    return new ParticipanteDTO(
-                            u.getId(), 
-                            u.getNome(), 
-                            u.getEmail(), 
-                            u.getTelefone(), 
-                            checkin,
-                            u.getEndereco(),
-                            u.getLatitude(),
-                            u.getLongitude()
-                    );
-                })
-                .toList();
+        return viagemService.listarParticipantes(viagemId);
     }
-
-    public record ParticipanteDTO(
-            Long id, 
-            String nome, 
-            String email, 
-            String telefone, 
-            boolean checkedIn,
-            String endereco,
-            Double latitude,
-            Double longitude
-    ) {}
+    
+    // Atualizar localização do motorista
+    @PutMapping("/{viagemId}/motorista/localizacao")
+    public ResponseEntity<Viagem> atualizarLocalizacaoMotorista(
+            @PathVariable Long viagemId,
+            @Valid @RequestBody LocalizacaoMotoristaDTO localizacao) {
+        return viagemService.atualizarLocalizacaoMotorista(viagemId, localizacao)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Viagem não encontrada"));
+    }
 }

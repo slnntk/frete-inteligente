@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
 import { inscricaoService, type InscricaoDTO } from "@/services/inscricao.service"
-import { checkinService } from "@/services/checkin.service"
+import { CheckInButton } from "@/components/checkin/CheckInButton"
 import { useToast } from "@/hooks/use-toast"
 
 export default function ViagensPage() {
@@ -37,15 +37,9 @@ export default function ViagensPage() {
     }
   }
 
-  const handleCheckin = async (viagemId: number) => {
-    if (!usuario?.id) return
-    try {
-      await checkinService.criar(viagemId, usuario.id)
-      setChecked((prev) => ({ ...prev, [viagemId]: true }))
-      toast({ title: "Check-in confirmado!" })
-    } catch (e) {
-      toast({ title: "Erro ao realizar check-in", variant: "destructive" })
-    }
+  const handleCheckInSuccess = (viagemId: number) => {
+    setChecked((prev) => ({ ...prev, [viagemId]: true }))
+    carregarInscricoes() // Recarregar para atualizar status
   }
 
   return (
@@ -65,13 +59,12 @@ export default function ViagensPage() {
                   <h3 className="font-semibold text-foreground">Viagem #{i.viagem.id}</h3>
                   <p className="text-sm text-muted-foreground">Destino e horário exibidos quando disponíveis</p>
                 </div>
-                <Button
-                  className={"min-w-[120px] " + (checked[i.viagem.id] ? "bg-green-600 hover:bg-green-600" : "bg-primary hover:bg-primary/90")}
-                  onClick={() => handleCheckin(i.viagem.id)}
+                <CheckInButton
+                  viagemId={i.viagem.id}
+                  clienteId={usuario!.id!}
+                  onCheckInSuccess={() => handleCheckInSuccess(i.viagem.id)}
                   disabled={checked[i.viagem.id]}
-                >
-                  {checked[i.viagem.id] ? "CHECK-IN FEITO" : "CHECK-IN"}
-                </Button>
+                />
               </div>
             </CardHeader>
             <CardContent>

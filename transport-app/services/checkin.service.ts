@@ -13,11 +13,22 @@ export const checkinService = {
   },
 
   // Criar novo check-in
-  criar: async (viagemId: number, clienteId: number): Promise<Checkin> => {
-    const payload = {
-      viagem: { id: viagemId },
-      cliente: { id: clienteId },
+  criar: async (
+    viagemId: number, 
+    clienteId: number, 
+    latitude?: number, 
+    longitude?: number
+  ): Promise<Checkin> => {
+    const payload: any = {
+      viagemId: viagemId,
+      clienteId: clienteId,
     };
+    
+    if (latitude !== undefined && longitude !== undefined && latitude !== null && longitude !== null) {
+      payload.latitude = latitude;
+      payload.longitude = longitude;
+    }
+    
     return apiClient.post<Checkin>('/checkins', payload);
   },
 

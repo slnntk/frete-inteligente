@@ -1,14 +1,40 @@
-// Serviço de geocodificação usando OpenStreetMap Nominatim
-// Documentação: https://nominatim.org/release-docs/develop/api/Search/
+import { apiClient } from '@/lib/api-client';
 
-export interface GeocodingResult {
-  lat: string;
-  lon: string;
-  display_name: string;
+export interface CepResult {
+  cep: string;
+  endereco: string;
+  logradouro: string;
+  bairro: string;
+  cidade: string;
+  estado: string;
+  ibge?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+export interface GeocodingRequest {
+  endereco: string;
+}
+
+export interface GeocodingResponse {
+  endereco: string;
+  latitude: number | null;
+  longitude: number | null;
+  mensagem?: string;
 }
 
 export const geocodingService = {
-  // Busca coordenadas (latitude, longitude) a partir de um endereço
+  // Busca endereço por CEP usando ViaCEP (via backend)
+  buscarPorCep: async (cep: string): Promise<CepResult> => {
+    return apiClient.get<CepResult>(`/geocoding/cep/${cep}`);
+  },
+
+  // Geocodifica um endereço completo (requer API externa configurada)
+  geocodificarEndereco: async (endereco: string): Promise<GeocodingResponse> => {
+    return apiClient.post<GeocodingResponse>('/geocoding/geocode', { endereco });
+  },
+
+  // Busca coordenadas usando OpenStreetMap Nominatim (fallback)
   buscarCoordenadas: async (endereco: string): Promise<{ latitude: number; longitude: number } | null> => {
     try {
       const encodedAddress = encodeURIComponent(endereco);
@@ -16,7 +42,7 @@ export const geocodingService = {
       
       const response = await fetch(url, {
         headers: {
-          'User-Agent': 'TransportApp/1.0' // Nominatim requer User-Agent
+          'User-Agent': 'TransportApp/1.0'
         }
       });
       
@@ -24,7 +50,7 @@ export const geocodingService = {
         throw new Error('Erro ao buscar coordenadas');
       }
       
-      const data: GeocodingResult[] = await response.json();
+      const data = await response.json();
       
       if (data && data.length > 0) {
         return {

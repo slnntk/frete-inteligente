@@ -64,6 +64,12 @@ export interface Viagem {
   horarioPartida: string;
   destino?: string;
   destinos?: string[];
+  cepPartida?: string;
+  enderecoPartida?: string;
+  latitudePartida?: number;
+  longitudePartida?: number;
+  latitudeMotorista?: number;
+  longitudeMotorista?: number;
   capacidade: number;
   status: ViagemStatus;
 }
@@ -73,6 +79,17 @@ export interface Checkin {
   viagem: Viagem | { id: number };
   cliente: Usuario | { id: number };
   realizadoEm?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+export interface Coleta {
+  id?: number;
+  viagem: Viagem | { id: number };
+  cliente: Usuario | { id: number };
+  coletadoEm?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface Inscricao {
@@ -124,6 +141,10 @@ export interface CreateViagemRequest {
   veiculoId?: number;
   horarioPartida: string;
   destino: string;
+  cepPartida?: string;
+  enderecoPartida?: string;
+  latitudePartida?: number;
+  longitudePartida?: number;
   capacidade: number;
   status: ViagemStatus;
 }

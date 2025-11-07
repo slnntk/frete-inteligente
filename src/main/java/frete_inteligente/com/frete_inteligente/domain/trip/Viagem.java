@@ -40,12 +40,32 @@ public class Viagem {
     @Column(name = "destino")
     private List<String> destinos;
 
+    // Campos de localização de partida
+    @Column(length = 10)
+    private String cepPartida;
+
+    @Column(length = 255)
+    private String enderecoPartida;
+
+    @Column(precision = 10)
+    private Double latitudePartida;
+
+    @Column(precision = 11)
+    private Double longitudePartida;
+
     @Column
     private Integer capacidade;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private ViagemStatus status;
+    
+    // Localização atual do motorista
+    @Column(precision = 10)
+    private Double latitudeMotorista;
+    
+    @Column(precision = 11)
+    private Double longitudeMotorista;
 }
 
 
