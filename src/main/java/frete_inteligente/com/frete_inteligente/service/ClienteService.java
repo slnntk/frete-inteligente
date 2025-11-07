@@ -27,6 +27,9 @@ public class ClienteService {
                 .cpf(dto.getCpf())
                 .telefone(dto.getTelefone())
                 .senhaHash(dto.getSenha()) // Em produção, usar BCrypt
+                .endereco(dto.getEndereco())
+                .latitude(dto.getLatitude())
+                .longitude(dto.getLongitude())
                 .build();
         
         usuario = usuarioRepository.save(usuario);
@@ -59,6 +62,9 @@ public class ClienteService {
                     if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
                         usuario.setSenhaHash(dto.getSenha());
                     }
+                    usuario.setEndereco(dto.getEndereco());
+                    usuario.setLatitude(dto.getLatitude());
+                    usuario.setLongitude(dto.getLongitude());
                     usuario = usuarioRepository.save(usuario);
                     return toDTO(usuario);
                 });
@@ -83,6 +89,9 @@ public class ClienteService {
                 .email(usuario.getEmail())
                 .cpf(usuario.getCpf())
                 .telefone(usuario.getTelefone())
+                .endereco(usuario.getEndereco())
+                .latitude(usuario.getLatitude())
+                .longitude(usuario.getLongitude())
                 .build();
     }
 }

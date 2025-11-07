@@ -11,6 +11,7 @@ import Link from "next/link"
 import { PostCard } from "@/components/post-card"
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
+import { clienteService, type ClienteDTO } from "@/services/cliente.service"
 
 const mockUserPosts = [
   {
@@ -45,10 +46,22 @@ export function ProfileLayout() {
   const [activeTab, setActiveTab] = useState("posts")
   const { usuario } = useAuth()
   const router = useRouter()
+  const [clienteData, setClienteData] = useState<ClienteDTO | null>(null)
 
   useEffect(() => {
     if (!usuario) {
       router.push("/login")
+      return
+    }
+    
+    // Se for cliente, buscar dados completos do cliente
+    if (usuario.tipo === "CLIENTE" && usuario.id) {
+      clienteService.buscarPorId(usuario.id)
+        .then(setClienteData)
+        .catch(() => {
+          // Se falhar, usar dados básicos do usuario
+          setClienteData(null)
+        })
     }
   }, [usuario, router])
 
@@ -56,6 +69,11 @@ export function ProfileLayout() {
   const isEmpresaOuAutonomo = usuario?.tipo === "EMPRESA" || usuario?.tipo === "AUTONOMO"
   const displayName = usuario?.nome || (isCliente ? "Cliente" : "Usuário")
   const displayRole = usuario?.tipo === "AUTONOMO" ? "Motorista Autônomo" : (isCliente ? "Cliente/Estudante" : "Empresa de Transporte")
+  
+  // Para clientes, usar dados completos se disponível, senão usar dados básicos
+  const endereco = isCliente && clienteData?.endereco 
+    ? clienteData.endereco 
+    : (usuario?.endereco || null)
 
   return (
     <div className="min-h-screen bg-background">
@@ -116,10 +134,12 @@ export function ProfileLayout() {
                   <h1 className="text-2xl font-bold text-foreground">{displayName}</h1>
                   <p className="text-muted-foreground">{displayRole}</p>
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-2 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4" />
-                      São Paulo, SP
-                    </span>
+                    {endereco && (
+                      <span className="flex items-center gap-1">
+                        <MapPin className="h-4 w-4" />
+                        {endereco}
+                      </span>
+                    )}
                     <span className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
                       Desde 2013
@@ -180,6 +200,17 @@ export function ProfileLayout() {
                 <Phone className="h-4 w-4" />
                 <span>{usuario?.telefone || "-"}</span>
               </div>
+              {endereco && (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <MapPin className="h-4 w-4" />
+                  <span>{endereco}</span>
+                </div>
+              )}
+              {isCliente && clienteData?.latitude && clienteData?.longitude && (
+                <div className="text-xs text-muted-foreground">
+                  Coordenadas: {clienteData.latitude.toFixed(6)}, {clienteData.longitude.toFixed(6)}
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

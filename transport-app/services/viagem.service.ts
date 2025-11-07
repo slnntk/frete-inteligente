@@ -69,7 +69,7 @@ export const viagemService = {
   },
 
   // Participantes (apenas para gestão)
-  listarParticipantes: async (viagemId: number): Promise<Array<{ id: number; nome: string; email: string; telefone: string; checkedIn: boolean }>> => {
+  listarParticipantes: async (viagemId: number): Promise<Array<{ id: number; nome: string; email: string; telefone: string; checkedIn: boolean; endereco?: string; latitude?: number; longitude?: number }>> => {
     return apiClient.get(`/viagens/${viagemId}/participantes`);
   },
 };

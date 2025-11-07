@@ -33,6 +33,9 @@ export interface Usuario {
   cpf: string;
   telefone: string;
   senhaHash?: string;
+  endereco?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface Postagem {

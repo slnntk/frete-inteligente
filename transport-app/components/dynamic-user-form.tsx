@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { autonomoService, type AutonomoDTO } from '@/services/autonomo.service';
 import { empresaService, type EmpresaDTO } from '@/services/empresa.service';
 import { clienteService, type ClienteDTO } from '@/services/cliente.service';
+import { geocodingService } from '@/services/geocoding.service';
 import { toast } from 'sonner';
 
 type UserType = 'CLIENTE' | 'AUTONOMO' | 'EMPRESA';
@@ -23,6 +24,8 @@ interface DynamicUserFormProps {
 export function DynamicUserForm({ onSuccess, initialData, mode = 'create' }: DynamicUserFormProps) {
   const [userType, setUserType] = useState<UserType>(initialData?.tipo || 'CLIENTE');
   const [loading, setLoading] = useState(false);
+  const [buscandoCoordenadas, setBuscandoCoordenadas] = useState(false);
+  const [enderecoCliente, setEnderecoCliente] = useState(initialData?.endereco || '');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,6 +35,21 @@ export function DynamicUserForm({ onSuccess, initialData, mode = 'create' }: Dyn
     
     try {
       if (userType === 'CLIENTE') {
+        const endereco = formData.get('endereco') as string;
+        let latitude: number | undefined;
+        let longitude: number | undefined;
+
+        // Se houver endereço, buscar coordenadas
+        if (endereco && endereco.trim()) {
+          const coords = await geocodingService.buscarCoordenadas(endereco);
+          if (coords) {
+            latitude = coords.latitude;
+            longitude = coords.longitude;
+          } else {
+            toast.warning('Não foi possível obter coordenadas do endereço. O endereço será salvo sem coordenadas.');
+          }
+        }
+
         const clienteData: ClienteDTO = {
           nome: formData.get('nome') as string,
           email: formData.get('email') as string,
@@ -41,6 +59,9 @@ export function DynamicUserForm({ onSuccess, initialData, mode = 'create' }: Dyn
           matricula: formData.get('matricula') as string,
           instituicao: formData.get('instituicao') as string,
           curso: formData.get('curso') as string,
+          endereco: endereco || undefined,
+          latitude,
+          longitude,
         };
 
         if (mode === 'create') {
@@ -201,6 +222,45 @@ export function DynamicUserForm({ onSuccess, initialData, mode = 'create' }: Dyn
                   placeholder="Nome do curso"
                   defaultValue={initialData?.curso}
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="endereco">Localização (Endereço)</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="endereco"
+                    name="endereco"
+                    placeholder="Ex: Fortaleza, CE, Brasil ou Rua Exemplo, 123, Fortaleza-CE"
+                    defaultValue={initialData?.endereco || enderecoCliente}
+                    onChange={(e) => setEnderecoCliente(e.target.value)}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={buscandoCoordenadas || !enderecoCliente.trim()}
+                    onClick={async () => {
+                      if (!enderecoCliente.trim()) return;
+                      setBuscandoCoordenadas(true);
+                      try {
+                        const coords = await geocodingService.buscarCoordenadas(enderecoCliente);
+                        if (coords) {
+                          toast.success(`Coordenadas encontradas: ${coords.latitude.toFixed(6)}, ${coords.longitude.toFixed(6)}`);
+                        } else {
+                          toast.error('Endereço não encontrado. Verifique e tente novamente.');
+                        }
+                      } catch (error) {
+                        toast.error('Erro ao buscar coordenadas');
+                      } finally {
+                        setBuscandoCoordenadas(false);
+                      }
+                    }}
+                  >
+                    {buscandoCoordenadas ? 'Buscando...' : 'Buscar'}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Informe o endereço completo para facilitar o mapeamento das viagens
+                </p>
               </div>
             </>
           )}

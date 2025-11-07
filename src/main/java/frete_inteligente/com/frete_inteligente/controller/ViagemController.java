@@ -5,8 +5,6 @@ import frete_inteligente.com.frete_inteligente.domain.trip.ViagemStatus;
 import frete_inteligente.com.frete_inteligente.repository.ViagemRepository;
 import frete_inteligente.com.frete_inteligente.repository.InscricaoRepository;
 import frete_inteligente.com.frete_inteligente.repository.CheckinRepository;
-import frete_inteligente.com.frete_inteligente.domain.trip.Inscricao;
-import frete_inteligente.com.frete_inteligente.domain.trip.Checkin;
 import frete_inteligente.com.frete_inteligente.domain.user.Usuario;
 import frete_inteligente.com.frete_inteligente.repository.PostagemRepository;
 import frete_inteligente.com.frete_inteligente.repository.VeiculoRepository;
@@ -97,10 +95,28 @@ public class ViagemController {
                     boolean checkin = checkinRepository.findAll().stream()
                             .anyMatch(c -> c.getViagem().getId().equals(viagemId)
                                     && c.getCliente().getId().equals(u.getId()));
-                    return new ParticipanteDTO(u.getId(), u.getNome(), u.getEmail(), u.getTelefone(), checkin);
+                    return new ParticipanteDTO(
+                            u.getId(), 
+                            u.getNome(), 
+                            u.getEmail(), 
+                            u.getTelefone(), 
+                            checkin,
+                            u.getEndereco(),
+                            u.getLatitude(),
+                            u.getLongitude()
+                    );
                 })
                 .toList();
     }
 
-    public record ParticipanteDTO(Long id, String nome, String email, String telefone, boolean checkedIn) {}
+    public record ParticipanteDTO(
+            Long id, 
+            String nome, 
+            String email, 
+            String telefone, 
+            boolean checkedIn,
+            String endereco,
+            Double latitude,
+            Double longitude
+    ) {}
 }

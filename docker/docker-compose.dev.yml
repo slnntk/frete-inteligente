@@ -4,8 +4,8 @@ services:
   # Backend Spring Boot (somente H2 em memória)
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: docker/Dockerfile
     container_name: frete-inteligente-backend
     restart: unless-stopped
     ports:
@@ -18,7 +18,7 @@ services:
   # Frontend Next.js
   frontend:
     build:
-      context: ./transport-app
+      context: ../transport-app
       dockerfile: Dockerfile
     container_name: frete-inteligente-frontend
     restart: unless-stopped

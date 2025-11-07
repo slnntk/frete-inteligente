@@ -7,6 +7,7 @@ import { viagemService } from "@/services/viagem.service"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { MapPin } from "lucide-react"
 import type { Viagem, ViagemStatus } from "@/types"
 
 interface Participante {
@@ -15,6 +16,9 @@ interface Participante {
   email: string
   telefone: string
   checkedIn: boolean
+  endereco?: string
+  latitude?: number
+  longitude?: number
 }
 
 export default function ViagemGestaoPage() {
@@ -108,14 +112,27 @@ export default function ViagemGestaoPage() {
             <CardContent>
               <div className="grid grid-cols-1 gap-3">
                 {participantes.map((p) => (
-                  <div key={p.id} className="flex items-center justify-between border rounded p-3">
-                    <div>
-                      <div className="font-medium">{p.nome}</div>
-                      <div className="text-sm text-muted-foreground">{p.email} · {p.telefone || '-'}</div>
+                  <div key={p.id} className="border rounded p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex-1">
+                        <div className="font-medium">{p.nome}</div>
+                        <div className="text-sm text-muted-foreground">{p.email} · {p.telefone || '-'}</div>
+                        {p.endereco && (
+                          <div className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
+                            <MapPin className="h-3 w-3" />
+                            <span>{p.endereco}</span>
+                          </div>
+                        )}
+                        {p.latitude && p.longitude && (
+                          <div className="text-xs text-muted-foreground mt-1">
+                            Coordenadas: {p.latitude.toFixed(6)}, {p.longitude.toFixed(6)}
+                          </div>
+                        )}
+                      </div>
+                      <Badge className={p.checkedIn ? "bg-green-600" : "bg-red-600"}>
+                        {p.checkedIn ? "Check-in feito" : "Sem check-in"}
+                      </Badge>
                     </div>
-                    <Badge className={p.checkedIn ? "bg-green-600" : "bg-red-600"}>
-                      {p.checkedIn ? "Check-in feito" : "Sem check-in"}
-                    </Badge>
                   </div>
                 ))}
                 {participantes.length === 0 && (

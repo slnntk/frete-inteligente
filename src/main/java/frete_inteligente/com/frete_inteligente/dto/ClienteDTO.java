@@ -21,5 +21,10 @@ public class ClienteDTO {
     private String matricula;
     private String instituicao;
     private String curso;
+    
+    // Campos de localização
+    private String endereco;
+    private Double latitude;
+    private Double longitude;
 }
 

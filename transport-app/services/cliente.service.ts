@@ -10,6 +10,9 @@ export interface ClienteDTO {
   matricula?: string;
   instituicao?: string;
   curso?: string;
+  endereco?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export const clienteService = {

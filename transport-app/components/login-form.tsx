@@ -31,16 +31,27 @@ export function LoginForm() {
     setIsLoading(true)
 
     try {
+      console.log('Tentando fazer login...', formData.email)
       await login({ email: formData.email, password: formData.password })
       toast({
         title: "Login realizado com sucesso!",
         description: "Bem-vindo ao Frete Inteligente",
       })
       router.push("/feed")
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Erro no login:', error)
+      const errorMessage = error?.message || error?.toString() || "Erro desconhecido"
+      
+      let userMessage = "Verifique suas credenciais e tente novamente"
+      if (errorMessage.includes('conectar') || errorMessage.includes('servidor') || error?.status === 0) {
+        userMessage = "Backend não está rodando. Execute: .\\scripts\\EXECUTAR-BACKEND.bat e aguarde 'Started FreteInteligenteApplication'"
+      } else if (errorMessage.includes('401') || errorMessage.includes('Credenciais')) {
+        userMessage = "Email ou senha incorretos"
+      }
+      
       toast({
         title: "Erro ao fazer login",
-        description: error instanceof Error ? error.message : "Verifique suas credenciais e tente novamente",
+        description: userMessage,
         variant: "destructive",
       })
     } finally {

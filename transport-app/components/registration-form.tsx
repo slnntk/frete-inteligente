@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { usuarioService } from "@/services/usuario.service"
+import { geocodingService } from "@/services/geocoding.service"
 import { UsuarioTipo } from "@/types"
 
 type UserType = "AUTONOMO" | "EMPRESA" | "CLIENTE"
@@ -25,8 +26,10 @@ export function RegistrationForm() {
     cpf: "",
     telefone: "",
     senha: "",
+    endereco: "",
   })
   const [isLoading, setIsLoading] = useState(false)
+  const [buscandoCoordenadas, setBuscandoCoordenadas] = useState(false)
 
   const handleUserTypeSelect = (type: UserType) => {
     setUserType(type)
@@ -42,24 +45,63 @@ export function RegistrationForm() {
     setIsLoading(true)
 
     try {
-      await usuarioService.criar({
+      console.log('Tentando cadastrar usuário...', formData.email)
+      
+      // Se for CLIENTE e tiver endereço, buscar coordenadas
+      let latitude: number | undefined;
+      let longitude: number | undefined;
+      
+      if (userType === 'CLIENTE' && formData.endereco && formData.endereco.trim()) {
+        try {
+          const coords = await geocodingService.buscarCoordenadas(formData.endereco);
+          if (coords) {
+            latitude = coords.latitude;
+            longitude = coords.longitude;
+          }
+        } catch (error) {
+          console.warn('Não foi possível obter coordenadas:', error);
+        }
+      }
+      
+      const usuarioData: any = {
         tipo: userType as UsuarioTipo,
         nome: formData.nome,
         email: formData.email,
         cpf: formData.cpf,
         telefone: formData.telefone,
         senhaHash: formData.senha, // Em produção, isso deveria ser hasheado no backend
-      })
+      };
+      
+      // Adicionar localização apenas para clientes
+      if (userType === 'CLIENTE') {
+        if (formData.endereco) usuarioData.endereco = formData.endereco;
+        if (latitude) usuarioData.latitude = latitude;
+        if (longitude) usuarioData.longitude = longitude;
+      }
+      
+      await usuarioService.criar(usuarioData)
 
       toast({
         title: "Cadastro realizado com sucesso!",
         description: "Faça login para continuar",
       })
       router.push("/login")
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Erro no cadastro:', error)
+      const errorMessage = error?.message || error?.toString() || "Erro desconhecido"
+      
+      let userMessage = "Erro ao cadastrar. Tente novamente."
+      if (errorMessage.includes('conectar') || errorMessage.includes('servidor') || error?.status === 0) {
+        userMessage = "Backend não está rodando. Execute: .\\scripts\\EXECUTAR-BACKEND.bat e aguarde 'Started FreteInteligenteApplication'"
+      } else if (errorMessage.includes('409') || errorMessage.includes('duplicado') || errorMessage.includes('já existe')) {
+        userMessage = "Este email já está cadastrado. Tente fazer login."
+      } else if (errorMessage.includes('400') || errorMessage.includes('inválido')) {
+        userMessage = "Dados inválidos. Verifique os campos preenchidos."
+      }
+      
       toast({
         title: "Erro ao cadastrar",
-        description: error instanceof Error ? error.message : "Tente novamente mais tarde",
+        description: userMessage,
         variant: "destructive",
       })
     } finally {
@@ -177,6 +219,60 @@ export function RegistrationForm() {
                 className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-primary"
               />
             </div>
+
+            {userType === "CLIENTE" && (
+              <div className="space-y-2">
+                <Label htmlFor="endereco" className="text-foreground">
+                  Localização (Endereço) - Opcional
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="endereco"
+                    type="text"
+                    placeholder="Ex: Fortaleza, CE, Brasil"
+                    value={formData.endereco}
+                    onChange={(e) => handleInputChange("endereco", e.target.value)}
+                    className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-primary"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={buscandoCoordenadas || !formData.endereco.trim()}
+                    onClick={async () => {
+                      if (!formData.endereco.trim()) return;
+                      setBuscandoCoordenadas(true);
+                      try {
+                        const coords = await geocodingService.buscarCoordenadas(formData.endereco);
+                        if (coords) {
+                          toast({
+                            title: "Coordenadas encontradas!",
+                            description: `${coords.latitude.toFixed(6)}, ${coords.longitude.toFixed(6)}`,
+                          });
+                        } else {
+                          toast({
+                            title: "Endereço não encontrado",
+                            description: "O endereço será salvo sem coordenadas",
+                            variant: "destructive",
+                          });
+                        }
+                      } catch (error) {
+                        toast({
+                          title: "Erro ao buscar coordenadas",
+                          variant: "destructive",
+                        });
+                      } finally {
+                        setBuscandoCoordenadas(false);
+                      }
+                    }}
+                  >
+                    {buscandoCoordenadas ? "Buscando..." : "Buscar"}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Informe o endereço para facilitar o mapeamento das viagens
+                </p>
+              </div>
+            )}
 
             <div className="flex gap-3 pt-2">
               <Button

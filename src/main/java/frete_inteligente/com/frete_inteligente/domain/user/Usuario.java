@@ -34,6 +34,16 @@ public class Usuario {
 
     @Column(name = "senha_hash", nullable = false, length = 255)
     private String senhaHash;
+
+    // Campos de localização
+    @Column(length = 255)
+    private String endereco;
+
+    @Column(precision = 10, scale = 8)
+    private Double latitude;
+
+    @Column(precision = 11, scale = 8)
+    private Double longitude;
 }
 
 
