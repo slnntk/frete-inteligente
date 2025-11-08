@@ -6,6 +6,8 @@ export interface Waypoint {
   endereco?: string;
   latitude: number;
   longitude: number;
+  checkedIn?: boolean;
+  coletado?: boolean; // Status de coleta do passageiro
 }
 
 export interface PontoPartida {

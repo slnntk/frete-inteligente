@@ -1,10 +1,12 @@
 package frete_inteligente.com.frete_inteligente.service;
 
 import frete_inteligente.com.frete_inteligente.domain.trip.Checkin;
+import frete_inteligente.com.frete_inteligente.domain.trip.Coleta;
 import frete_inteligente.com.frete_inteligente.domain.trip.Inscricao;
 import frete_inteligente.com.frete_inteligente.domain.trip.Viagem;
 import frete_inteligente.com.frete_inteligente.domain.user.Usuario;
 import frete_inteligente.com.frete_inteligente.repository.CheckinRepository;
+import frete_inteligente.com.frete_inteligente.repository.ColetaRepository;
 import frete_inteligente.com.frete_inteligente.repository.InscricaoRepository;
 import frete_inteligente.com.frete_inteligente.repository.ViagemRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class RotaService {
     private final ViagemRepository viagemRepository;
     private final InscricaoRepository inscricaoRepository;
     private final CheckinRepository checkinRepository;
+    private final ColetaRepository coletaRepository;
     private final RestTemplate restTemplate;
     
     @Value("${mapbox.access-token:}")
@@ -95,6 +98,10 @@ public class RotaService {
                 // Caso contrário, usar endereço cadastrado
                 Optional<Checkin> checkinOpt = checkinRepository.findByViagemIdAndClienteId(viagemId, cliente.getId());
                 
+                // Verificar se há coleta
+                Optional<Coleta> coletaOpt = coletaRepository.findByViagemIdAndClienteId(viagemId, cliente.getId());
+                boolean coletado = coletaOpt.isPresent();
+                
                 if (checkinOpt.isPresent() && checkinOpt.get().getLatitude() != null 
                         && checkinOpt.get().getLongitude() != null) {
                     // Usar local de check-in (local escolhido pelo passageiro)
@@ -109,6 +116,9 @@ public class RotaService {
                     p.put("endereco", cliente.getEndereco());
                     p.put("checkedIn", false);
                 }
+                
+                // Adicionar status de coleta
+                p.put("coletado", coletado);
                 
                 return p;
             })

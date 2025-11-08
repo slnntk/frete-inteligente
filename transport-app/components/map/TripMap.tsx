@@ -132,18 +132,38 @@ export function TripMap({
   }, [mapboxToken, mounted]) // Removido initialCenter e initialZoom para não recriar o mapa
 
   // Serializar dados para comparar mudanças
+  // IMPORTANTE: Incluir status de coleta na comparação para detectar mudanças
   const dataKey = useMemo(() => {
-    const passageirosKey = passageiros.map(p => `${p.id}-${p.latitude}-${p.longitude}-${p.checkedIn}-${p.coletado}`).join('|')
+    // Criar uma chave única incluindo TODOS os dados relevantes, especialmente o status de coleta
+    const passageirosKey = passageiros.map(p => 
+      `${p.id}-${p.latitude}-${p.longitude}-${p.checkedIn || false}-${p.coletado || false}`
+    ).join('|')
     const pontoKey = pontoPartida ? `${pontoPartida.latitude}-${pontoPartida.longitude}` : ''
     const motoristaKey = motorista ? `${motorista.latitude}-${motorista.longitude}` : ''
+    // Incluir status de coleta dos waypoints na rota também
+    const waypointsKey = rota?.waypoints?.map(wp => 
+      `${wp.id}-${wp.coletado || false}`
+    ).join('|') || ''
     const rotaKey = rota ? JSON.stringify(rota.rotaReal?.coordinates?.slice(0, 10)) : '' // Primeiros 10 pontos para comparação
-    return `${passageirosKey}|${pontoKey}|${motoristaKey}|${rotaKey}`
+    return `${passageirosKey}|${pontoKey}|${motoristaKey}|${waypointsKey}|${rotaKey}`
   }, [passageiros, pontoPartida, motorista, rota])
 
   // Adicionar markers e rota quando o mapa estiver carregado
   useEffect(() => {
-    if (!mapRef.current) return
-    if (dataKey === lastDataRef.current) return // Dados não mudaram, não atualizar
+    if (!mapRef.current) {
+      console.log("[TripMap] Mapa não está disponível ainda")
+      return
+    }
+    
+    if (dataKey === lastDataRef.current) {
+      console.log("[TripMap] Dados não mudaram, pulando atualização")
+      return // Dados não mudaram, não atualizar
+    }
+
+    console.log("[TripMap] Dados mudaram! Atualizando mapa...")
+    console.log("[TripMap] dataKey anterior:", lastDataRef.current?.substring(0, 100))
+    console.log("[TripMap] dataKey nova:", dataKey.substring(0, 100))
+    console.log("[TripMap] Passageiros com coletado:", passageiros.map(p => `${p.nome}: coletado=${p.coletado}`))
 
     const map = mapRef.current
     lastDataRef.current = dataKey
@@ -207,9 +227,16 @@ export function TripMap({
       }
 
       // Adicionar markers de passageiros com números de ordem
+      console.log("[TripMap] Criando markers para passageiros:", passageirosOrdenados.map(p => ({
+        nome: p.nome,
+        id: p.id,
+        coletado: p.coletado,
+        checkedIn: p.checkedIn
+      })))
+      
       passageirosOrdenados.forEach((p) => {
         if (!p.latitude || !p.longitude) {
-          console.warn(`Passageiro ${p.nome} não tem coordenadas`)
+          console.warn(`[TripMap] Passageiro ${p.nome} não tem coordenadas`)
           return
         }
 
@@ -217,14 +244,18 @@ export function TripMap({
         const nomeEscapado = p.nome.replace(/"/g, '&quot;').replace(/'/g, '&#39;')
         
         // Determinar cor e status baseado no estado
+        // IMPORTANTE: Verificar status de coleta primeiro
         let bgColor = "#f97316" // Laranja (pendente)
         let statusText = "Aguardando"
         let borderColor = "rgba(255,255,255,0.5)"
         
-        if (p.coletado) {
+        console.log(`[TripMap] Passageiro ${p.nome}: coletado=${p.coletado}, checkedIn=${p.checkedIn}`)
+        
+        if (p.coletado === true) {
           bgColor = "#6b7280" // Cinza (coletado)
           statusText = "✓ Coletado"
           borderColor = "rgba(107,114,128,0.8)"
+          console.log(`[TripMap] Marker ${p.nome} será CINZA (coletado)`)
         } else if (p.checkedIn) {
           // Verificar se é o próximo baseado na ordem da rota
           // O próximo é o primeiro não coletado na ordem da rota
@@ -351,7 +382,7 @@ export function TripMap({
         map.off("load", loadHandler)
       }
     }
-  }, [dataKey, rota, routeGeoJson, showRoute]) // Usar dataKey ao invés de objetos individuais
+  }, [dataKey, rota, routeGeoJson, showRoute, passageiros, pontoPartida, motorista]) // Incluir dependências explícitas para garantir atualização
 
   if (!mapboxToken) {
     return (

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState, useMemo, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { viagemService } from "@/services/viagem.service"
@@ -37,33 +37,7 @@ export default function ViagemViewPage() {
   const [minhaOrdem, setMinhaOrdem] = useState<number | null>(null)
   const [totalParticipantes, setTotalParticipantes] = useState(0)
 
-  useEffect(() => {
-    if (!usuario) {
-      router.push("/login")
-      return
-    }
-
-    if (usuario.tipo !== "CLIENTE") {
-      // Se não for cliente, redirecionar para a página de gestão
-      router.push(`/viagens/${params.id}`)
-      return
-    }
-
-    carregar()
-  }, [usuario, params.id, router])
-
-  // Atualizar quando viagem estiver em andamento
-  useEffect(() => {
-    if (viagem?.status !== "EM_ANDAMENTO") return
-
-    const interval = setInterval(() => {
-      carregar(true)
-    }, 10000) // Atualizar a cada 10 segundos
-
-    return () => clearInterval(interval)
-  }, [viagem?.status, params.id])
-
-  const carregar = async (silent = false) => {
+  const carregar = useCallback(async (silent = false) => {
     try {
       if (!silent) setLoading(true)
       
@@ -87,14 +61,34 @@ export default function ViagemViewPage() {
         return
       }
 
-      setParticipanteInfo({
-        id: meuParticipante.id,
-        nome: meuParticipante.nome,
-        checkedIn: meuParticipante.checkedIn,
-        coletado: meuParticipante.coletado,
+      // Atualizar informações do participante (incluindo status de coleta)
+      // Usar função de atualização para comparar com estado anterior
+      setParticipanteInfo(prev => {
+        const novoInfo: ParticipanteInfo = {
+          id: meuParticipante.id,
+          nome: meuParticipante.nome,
+          checkedIn: meuParticipante.checkedIn,
+          coletado: meuParticipante.coletado,
+        }
+
+        // Verificar se houve mudança no status de coleta
+        const coletadoMudou = prev?.coletado !== novoInfo.coletado
+        if (coletadoMudou && novoInfo.coletado && !silent) {
+          console.log("[ViagemView] Status de coleta atualizado: coletado = true")
+          // Usar setTimeout para evitar problemas com toast durante render
+          setTimeout(() => {
+            toast({
+              title: "Você foi coletado!",
+              description: "O motorista marcou sua coleta",
+            })
+          }, 100)
+        }
+
+        return novoInfo
       })
 
-      // Carregar rota se houver participantes
+      // Carregar rota se houver participantes e ponto de partida
+      // Recalcular rota sempre para refletir mudanças nas coletas
       if (participantes.length > 0 && v.latitudePartida && v.longitudePartida) {
         try {
           const rotaData = await rotaService.calcularRota(Number(params.id))
@@ -104,12 +98,24 @@ export default function ViagemViewPage() {
           if (rotaData && rotaData.waypoints && usuario?.id) {
             const minhaPosicao = rotaData.waypoints.findIndex(wp => wp.id === usuario.id)
             if (minhaPosicao !== -1) {
-              setMinhaOrdem(minhaPosicao + 1)
-              setParticipanteInfo(prev => prev ? { ...prev, ordem: minhaPosicao + 1 } : null)
+              const novaOrdem = minhaPosicao + 1
+              
+              // Atualizar ordem usando função de atualização para comparar com anterior
+              setMinhaOrdem(prev => {
+                const ordemMudou = prev !== novaOrdem
+                if (ordemMudou && prev !== null && !silent) {
+                  console.log(`[ViagemView] Ordem na rota mudou: ${prev}º → ${novaOrdem}º`)
+                }
+                return novaOrdem
+              })
+              
+              setParticipanteInfo(prev => prev ? { ...prev, ordem: novaOrdem } : prev)
+            } else {
+              setMinhaOrdem(null)
             }
           }
         } catch (error) {
-          console.warn("Não foi possível carregar rota:", error)
+          console.warn("[ViagemView] Não foi possível carregar rota:", error)
         }
       }
 
@@ -123,7 +129,46 @@ export default function ViagemViewPage() {
     } finally {
       if (!silent) setLoading(false)
     }
-  }
+  }, [params.id, usuario?.id, router, toast])
+
+  // Carregar dados iniciais
+  useEffect(() => {
+    if (!usuario) {
+      router.push("/login")
+      return
+    }
+
+    if (usuario.tipo !== "CLIENTE") {
+      router.push(`/viagens/${params.id}`)
+      return
+    }
+
+    carregar()
+  }, [usuario, params.id, router, carregar])
+
+  // Atualizar automaticamente quando viagem estiver em andamento ou aberta (para ver coletas)
+  useEffect(() => {
+    // Não atualizar se não houver viagem ou se estiver encerrada
+    if (!viagem || viagem.status === "ENCERRADA") {
+      return
+    }
+
+    // Atualizar mais frequentemente quando em andamento (a cada 5 segundos)
+    // Atualizar menos frequentemente quando aberta (a cada 10 segundos) para ver coletas
+    const intervalTime = viagem.status === "EM_ANDAMENTO" ? 5000 : 10000
+
+    console.log(`[ViagemView] Iniciando atualização automática (intervalo: ${intervalTime}ms, status: ${viagem.status})`)
+
+    const interval = setInterval(() => {
+      console.log("[ViagemView] Atualizando dados automaticamente...")
+      carregar(true)
+    }, intervalTime)
+
+    return () => {
+      console.log("[ViagemView] Limpando intervalo de atualização")
+      clearInterval(interval)
+    }
+  }, [viagem?.status, viagem?.id, params.id, carregar])
 
   const handleCheckInSuccess = () => {
     setIsCheckInModalOpen(false)
@@ -148,16 +193,17 @@ export default function ViagemViewPage() {
   const passageirosMemo = useMemo(() => {
     if (!rota || !rota.waypoints) return []
     
+    // Mapear waypoints para passageiros, garantindo que o status de coleta seja incluído
     return rota.waypoints.map(wp => ({
       id: wp.id,
       nome: wp.nome || "Passageiro",
       endereco: wp.endereco,
       latitude: wp.latitude,
       longitude: wp.longitude,
-      checkedIn: true,
-      coletado: wp.coletado || false,
+      checkedIn: wp.checkedIn !== undefined ? wp.checkedIn : true, // Se não definido, assume true (está na rota)
+      coletado: wp.coletado === true, // Garantir que seja boolean explícito
     }))
-  }, [rota])
+  }, [rota]) // Depender apenas da rota, que já contém todos os dados atualizados
 
   const motoristaMemo = useMemo(() =>
     viagem && (viagem as any).latitudeMotorista && (viagem as any).longitudeMotorista
@@ -345,7 +391,7 @@ export default function ViagemViewPage() {
               )}
 
               {/* Ordem na Rota */}
-              {minhaOrdem && viagem.status === "EM_ANDAMENTO" && (
+              {minhaOrdem && (viagem.status === "EM_ANDAMENTO" || viagem.status === "ABERTA") && (
                 <div className="pt-4 border-t">
                   <div className="bg-primary/10 rounded-lg p-4 text-center">
                     <p className="text-sm text-muted-foreground mb-1">Sua posição na rota</p>
@@ -353,6 +399,11 @@ export default function ViagemViewPage() {
                     <p className="text-xs text-muted-foreground mt-1">
                       de {totalParticipantes} passageiros
                     </p>
+                    {participanteInfo?.coletado && (
+                      <p className="text-xs text-green-600 mt-2 font-medium">
+                        ✓ Coletado
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
