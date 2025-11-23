@@ -21,21 +21,21 @@ export interface PagamentoRequest {
 
 export const pagamentoService = {
   async criar(dto: PagamentoRequest): Promise<PagamentoResponse> {
-    const response = await apiClient.post("/pagamentos", dto)
-    return response.data
+    return apiClient.post("/pagamentos", dto)
   },
 
   async confirmarPagamento(pagamentoId: number): Promise<PagamentoResponse> {
-    const response = await apiClient.post(`/pagamentos/${pagamentoId}/confirmar`)
-    return response.data
+    console.log(`[PagamentoService] Confirmando pagamento ${pagamentoId}`)
+    const response = await apiClient.post<PagamentoResponse>(`/pagamentos/${pagamentoId}/confirmar`)
+    console.log(`[PagamentoService] Resposta confirmação:`, response)
+    return response
   },
 
   async buscarPorViagemEUsuario(viagemId: number, usuarioId: number): Promise<PagamentoResponse | null> {
     try {
-      const response = await apiClient.get(`/pagamentos/viagem/${viagemId}/usuario/${usuarioId}`)
-      return response.data
+      return await apiClient.get<PagamentoResponse>(`/pagamentos/viagem/${viagemId}/usuario/${usuarioId}`)
     } catch (error: any) {
-      if (error.response?.status === 404) {
+      if (error.status === 404) {
         return null
       }
       throw error
@@ -43,8 +43,7 @@ export const pagamentoService = {
   },
 
   async buscarPorViagem(viagemId: number): Promise<PagamentoResponse[]> {
-    const response = await apiClient.get(`/pagamentos/viagem/${viagemId}`)
-    return response.data
+    return apiClient.get<PagamentoResponse[]>(`/pagamentos/viagem/${viagemId}`)
   }
 }
 
