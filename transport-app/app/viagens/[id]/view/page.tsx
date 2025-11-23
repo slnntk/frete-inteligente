@@ -44,7 +44,7 @@ export default function ViagemViewPage() {
   const carregar = useCallback(async (silent = false) => {
     try {
       if (!silent) setLoading(true)
-      
+
       const v = await viagemService.buscarPorId(Number(params.id))
       setViagem(v)
 
@@ -113,7 +113,7 @@ export default function ViagemViewPage() {
             const minhaPosicao = rotaData.waypoints.findIndex(wp => wp.id === usuario.id)
             if (minhaPosicao !== -1) {
               const novaOrdem = minhaPosicao + 1
-              
+
               // Atualizar ordem usando função de atualização para comparar com anterior
               setMinhaOrdem(prev => {
                 const ordemMudou = prev !== novaOrdem
@@ -122,7 +122,7 @@ export default function ViagemViewPage() {
                 }
                 return novaOrdem
               })
-              
+
               setParticipanteInfo(prev => prev ? { ...prev, ordem: novaOrdem } : prev)
             } else {
               setMinhaOrdem(null)
@@ -163,7 +163,7 @@ export default function ViagemViewPage() {
   // Atualizar automaticamente quando viagem estiver em andamento ou aberta (para ver coletas)
   useEffect(() => {
     // Não atualizar se não houver viagem ou se estiver encerrada
-    if (!viagem || viagem.status === "ENCERRADA") {
+    if (!viagem || viagem.status === "CONCLUIDA") {
       return
     }
 
@@ -194,19 +194,19 @@ export default function ViagemViewPage() {
   }
 
   // Memoizar dados para o mapa
-  const pontoPartidaMemo = useMemo(() => 
+  const pontoPartidaMemo = useMemo(() =>
     viagem?.latitudePartida && viagem?.longitudePartida
       ? {
-          latitude: viagem.latitudePartida,
-          longitude: viagem.longitudePartida,
-          endereco: viagem.enderecoPartida
-        }
+        latitude: viagem.latitudePartida,
+        longitude: viagem.longitudePartida,
+        endereco: viagem.enderecoPartida
+      }
       : undefined
-  , [viagem?.latitudePartida, viagem?.longitudePartida, viagem?.enderecoPartida])
+    , [viagem?.latitudePartida, viagem?.longitudePartida, viagem?.enderecoPartida])
 
   const passageirosMemo = useMemo(() => {
     if (!rota || !rota.waypoints) return []
-    
+
     // Mapear waypoints para passageiros, garantindo que o status de coleta seja incluído
     return rota.waypoints.map(wp => ({
       id: wp.id,
@@ -222,22 +222,22 @@ export default function ViagemViewPage() {
   const motoristaMemo = useMemo(() =>
     viagem && (viagem as any).latitudeMotorista && (viagem as any).longitudeMotorista
       ? {
-          latitude: (viagem as any).latitudeMotorista,
-          longitude: (viagem as any).longitudeMotorista
-        }
+        latitude: (viagem as any).latitudeMotorista,
+        longitude: (viagem as any).longitudeMotorista
+      }
       : undefined
-  , [viagem, (viagem as any)?.latitudeMotorista, (viagem as any)?.longitudeMotorista])
+    , [viagem, (viagem as any)?.latitudeMotorista, (viagem as any)?.longitudeMotorista])
 
   const getStatusBadge = () => {
     if (!viagem) return null
-    
+
     switch (viagem.status) {
       case "ABERTA":
         return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">Aberta</Badge>
       case "EM_ANDAMENTO":
         return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Em Andamento</Badge>
-      case "ENCERRADA":
-        return <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200">Encerrada</Badge>
+      case "CONCLUIDA":
+        return <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200">Concluída</Badge>
       default:
         return <Badge variant="outline">{viagem.status}</Badge>
     }
@@ -325,7 +325,7 @@ export default function ViagemViewPage() {
                     <Package className="h-5 w-5 text-muted-foreground" />
                     <div>
                       <p className="text-sm text-muted-foreground">Preço</p>
-                      <p className="font-medium">R$ {viagem.postagem.preco?.toFixed(2) || "—"}</p>
+                      <p className="font-medium">R$ {(viagem.postagem as any).preco?.toFixed(2) || "—"}</p>
                     </div>
                   </div>
                 )}
@@ -356,7 +356,7 @@ export default function ViagemViewPage() {
         {/* Sidebar - Status e ações */}
         <div className="space-y-6">
           {/* Status do Passageiro */}
-          <Card 
+          <Card
             style={{ backgroundColor: '#ffffff', opacity: 1 }}
             className="!bg-white !opacity-100"
           >
@@ -401,7 +401,7 @@ export default function ViagemViewPage() {
                     <Badge variant="outline">Pendente</Badge>
                   )}
                 </div>
-                {pagamento?.status !== "PAGO" && viagem.postagem?.preco && (
+                {pagamento?.status !== "PAGO" && (viagem.postagem as any)?.preco && (
                   <Button
                     onClick={() => setIsPaymentModalOpen(true)}
                     className="w-full bg-green-600 hover:bg-green-700 text-white"
@@ -463,8 +463,8 @@ export default function ViagemViewPage() {
           </Card>
 
           {/* Informações do Motorista */}
-          {viagem.postagem?.autor && (
-            <Card 
+          {(viagem.postagem as any)?.autor && (
+            <Card
               style={{ backgroundColor: '#ffffff', opacity: 1 }}
               className="!bg-white !opacity-100"
             >
@@ -473,10 +473,10 @@ export default function ViagemViewPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <p className="font-medium">{viagem.postagem.autor.nome}</p>
-                  <p className="text-sm text-muted-foreground">{viagem.postagem.autor.email}</p>
-                  {viagem.postagem.autor.telefone && (
-                    <p className="text-sm text-muted-foreground">{viagem.postagem.autor.telefone}</p>
+                  <p className="font-medium">{(viagem.postagem as any).autor.nome}</p>
+                  <p className="text-sm text-muted-foreground">{(viagem.postagem as any).autor.email}</p>
+                  {(viagem.postagem as any).autor.telefone && (
+                    <p className="text-sm text-muted-foreground">{(viagem.postagem as any).autor.telefone}</p>
                   )}
                 </div>
               </CardContent>
@@ -484,8 +484,8 @@ export default function ViagemViewPage() {
           )}
 
           {/* Descrição da Postagem */}
-          {viagem.postagem?.descricao && (
-            <Card 
+          {(viagem.postagem as any)?.descricao && (
+            <Card
               style={{ backgroundColor: '#ffffff', opacity: 1 }}
               className="!bg-white !opacity-100"
             >
@@ -494,7 +494,7 @@ export default function ViagemViewPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground whitespace-pre-line">
-                  {viagem.postagem.descricao}
+                  {(viagem.postagem as any).descricao}
                 </p>
               </CardContent>
             </Card>
@@ -509,7 +509,7 @@ export default function ViagemViewPage() {
           onOpenChange={setIsCheckInModalOpen}
           onLocationSelected={async (latitude, longitude, endereco) => {
             try {
-              await checkinService.criar(Number(params.id), usuario.id, latitude, longitude)
+              await checkinService.criar(Number(params.id), usuario.id!, latitude, longitude)
               handleCheckInSuccess()
             } catch (error: any) {
               toast({
@@ -526,36 +526,39 @@ export default function ViagemViewPage() {
       )}
 
       {/* Modal de Pagamento */}
-      {viagem && usuario && viagem.postagem?.preco && (
+      {viagem && usuario && (viagem.postagem as any)?.preco && (
         <PaymentModal
           open={isPaymentModalOpen}
           onOpenChange={setIsPaymentModalOpen}
           viagemId={Number(params.id)}
-          valor={viagem.postagem.preco}
+          valor={(viagem.postagem as any).preco}
           onPaymentConfirmed={async () => {
             try {
               // Criar ou buscar pagamento
-              let pagamentoData = await pagamentoService.buscarPorViagemEUsuario(Number(params.id), usuario.id)
-              
+              let pagamentoData = await pagamentoService.buscarPorViagemEUsuario(Number(params.id), usuario.id!)
+
               if (!pagamentoData) {
                 // Criar novo pagamento
                 pagamentoData = await pagamentoService.criar({
                   viagemId: Number(params.id),
-                  usuarioId: usuario.id,
-                  valor: viagem.postagem!.preco!,
+                  usuarioId: usuario.id!,
+                  valor: (viagem.postagem as any)!.preco!,
                   metodo: "PIX"
                 })
               }
-              
+
               // Confirmar pagamento
+              if (!pagamentoData || !pagamentoData.id) {
+                throw new Error("ID do pagamento não encontrado")
+              }
               pagamentoData = await pagamentoService.confirmarPagamento(pagamentoData.id)
               setPagamento(pagamentoData)
-              
+
               toast({
                 title: "Pagamento confirmado!",
                 description: "Seu pagamento foi processado com sucesso",
               })
-              
+
               carregar()
             } catch (error: any) {
               toast({

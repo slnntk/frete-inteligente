@@ -1,6 +1,7 @@
 package frete_inteligente.com.frete_inteligente.service;
 
 import frete_inteligente.com.frete_inteligente.domain.payment.Pagamento;
+import frete_inteligente.com.frete_inteligente.exception.EntityNotFoundException;
 import frete_inteligente.com.frete_inteligente.domain.payment.PagamentoStatus;
 import frete_inteligente.com.frete_inteligente.domain.trip.Viagem;
 import frete_inteligente.com.frete_inteligente.domain.user.Usuario;
@@ -33,17 +34,17 @@ public class PagamentoService {
         if (dto.getViagemId() == null) {
             throw new IllegalArgumentException("ID da viagem é obrigatório");
         }
-        
+
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-        
+
         Viagem viagem = viagemRepository.findById(dto.getViagemId())
                 .orElseThrow(() -> new IllegalArgumentException("Viagem não encontrada"));
 
         // Verificar se já existe pagamento para esta viagem e usuário
         Optional<Pagamento> pagamentoExistente = pagamentoRepository.findByViagemIdAndUsuarioId(
                 dto.getViagemId(), dto.getUsuarioId());
-        
+
         if (pagamentoExistente.isPresent()) {
             return toDTO(pagamentoExistente.get());
         }
@@ -65,11 +66,11 @@ public class PagamentoService {
     @Transactional
     public PagamentoResponseDTO confirmarPagamento(Long pagamentoId) {
         Pagamento pagamento = pagamentoRepository.findById(pagamentoId)
-                .orElseThrow(() -> new IllegalArgumentException("Pagamento não encontrado"));
-        
+                .orElseThrow(() -> new EntityNotFoundException("Pagamento não encontrado"));
+
         pagamento.setStatus(PagamentoStatus.PAGO);
         pagamento = pagamentoRepository.save(pagamento);
-        
+
         return toDTO(pagamento);
     }
 
@@ -101,4 +102,3 @@ public class PagamentoService {
                 .build();
     }
 }
-
