@@ -28,7 +28,7 @@ export const clienteService = {
     return apiClient.post<ClienteDTO>('/clientes', cliente);
   },
 
-  atualizar: async (id: number, cliente: ClienteDTO): Promise<ClienteDTO> => {
+  atualizar: async (id: number, cliente: Partial<ClienteDTO>): Promise<ClienteDTO> => {
     return apiClient.put<ClienteDTO>(`/clientes/${id}`, cliente);
   },
 

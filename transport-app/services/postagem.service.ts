@@ -15,7 +15,7 @@ export const postagemService = {
   // Criar nova postagem
   criar: async (data: CreatePostagemRequest): Promise<Postagem> => {
     const payload = {
-      autor: { id: data.autorId },
+      autorId: data.autorId,
       titulo: data.titulo,
       regiao: data.regiao,
       descricao: data.descricao,
@@ -26,12 +26,12 @@ export const postagemService = {
 
   // Atualizar postagem
   atualizar: async (id: number, data: Partial<CreatePostagemRequest>): Promise<Postagem> => {
-    const payload: Partial<Postagem> = {
+    const payload: any = {
       ...(data.titulo && { titulo: data.titulo }),
       ...(data.regiao && { regiao: data.regiao }),
       ...(data.descricao && { descricao: data.descricao }),
       ...(data.preco !== undefined && { preco: data.preco }),
-      ...(data.autorId && { autor: { id: data.autorId } }),
+      ...(data.autorId && { autorId: data.autorId }),
     };
     return apiClient.put<Postagem>(`/postagens/${id}`, payload);
   },

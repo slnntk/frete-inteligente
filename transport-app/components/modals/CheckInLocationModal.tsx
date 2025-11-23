@@ -154,7 +154,7 @@ export function CheckInLocationModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-card border-border max-w-md">
+      <DialogContent style={{ backgroundColor: '#ffffff', opacity: 1 }} className="bg-card border-border max-w-md !bg-white !opacity-100">
         <DialogHeader>
           <DialogTitle className="text-foreground">Escolher Local de Embarque</DialogTitle>
           <DialogDescription className="text-muted-foreground">

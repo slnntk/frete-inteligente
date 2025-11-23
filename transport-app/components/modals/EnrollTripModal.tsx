@@ -31,7 +31,7 @@ export function EnrollTripModal({ open, onOpenChange, viagem, onEnrollSuccess }:
 
   const handleCepFound = async (result: CepResult & { latitude?: number; longitude?: number }) => {
     setEnderecoEncontrado(result)
-    
+
     // Tentar carregar rota para visualização
     if (viagem.id && result.latitude && result.longitude) {
       try {
@@ -73,7 +73,7 @@ export function EnrollTripModal({ open, onOpenChange, viagem, onEnrollSuccess }:
 
       // Criar inscrição
       await inscricaoService.criar(viagem.id!, usuario.id)
-      
+
       toast({ title: "Inscrição realizada com sucesso!" })
       onOpenChange(false)
       if (onEnrollSuccess) {
@@ -89,7 +89,7 @@ export function EnrollTripModal({ open, onOpenChange, viagem, onEnrollSuccess }:
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent style={{ backgroundColor: '#ffffff', opacity: 1 }} className="max-w-3xl max-h-[90vh] overflow-y-auto !bg-white !opacity-100">
         <DialogHeader>
           <DialogTitle>Inscrever-se na Viagem</DialogTitle>
           <DialogDescription>
@@ -127,13 +127,13 @@ export function EnrollTripModal({ open, onOpenChange, viagem, onEnrollSuccess }:
                 passageiros={
                   enderecoEncontrado.latitude && enderecoEncontrado.longitude
                     ? [{
-                        id: 0,
-                        nome: "Você",
-                        endereco: enderecoEncontrado.endereco,
-                        latitude: enderecoEncontrado.latitude,
-                        longitude: enderecoEncontrado.longitude,
-                        checkedIn: false
-                      }]
+                      id: 0,
+                      nome: "Você",
+                      endereco: enderecoEncontrado.endereco,
+                      latitude: enderecoEncontrado.latitude,
+                      longitude: enderecoEncontrado.longitude,
+                      checkedIn: false
+                    }]
                     : []
                 }
                 rota={rota}
