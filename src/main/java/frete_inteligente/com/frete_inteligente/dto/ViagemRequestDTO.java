@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Data
 @Builder
@@ -21,6 +22,7 @@ public class ViagemRequestDTO {
     private Long veiculoId;
     
     @NotNull(message = "Horário de partida é obrigatório")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime horarioPartida;
     
     private String destino;

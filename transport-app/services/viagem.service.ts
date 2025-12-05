@@ -14,8 +14,8 @@ export const viagemService = {
 
   // Criar nova viagem
   criar: async (data: CreateViagemRequest): Promise<Viagem> => {
-    const payload: Partial<Viagem> = {
-      postagem: { id: data.postagemId },
+    const payload: any = {
+      postagemId: data.postagemId,
       horarioPartida: data.horarioPartida,
       ...(data.destino && { destino: data.destino }),
       ...(data.cepPartida && { cepPartida: data.cepPartida }),

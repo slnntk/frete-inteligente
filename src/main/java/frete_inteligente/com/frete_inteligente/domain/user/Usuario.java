@@ -33,6 +33,7 @@ public class Usuario {
     private String telefone;
 
     @Column(name = "senha_hash", nullable = false, length = 255)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private String senhaHash;
 
     // Campos de localização
